@@ -37,7 +37,7 @@ jobs:
         dotnet build --configuration Release --no-restore
         dotnet publish -c Release -o ./AppTramitesNoPension0423 -r win-x64 -p:PublishReadyToRun=false
       env:
-        api_url: "http://192.168.0.156:2022/"
+        api_url: "here_url"
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
