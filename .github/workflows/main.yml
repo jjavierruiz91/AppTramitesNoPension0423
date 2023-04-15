@@ -10,22 +10,39 @@ on:
     branches: [ "master" ]
 
 jobs:
-  publish:
-
+  publish: 
     runs-on: ubuntu-latest
-
+    
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+         
+      
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore 
+      
+    - name: dotnet run
+      run: dotnet run 
       
     - name: Build
       run: |
         dotnet build --configuration Release --no-restore
-        dotnet publish -c Release -o ./ -r win-x64 --self-contained true -p:PublishReadyToRun=false
+        dotnet publish -c Release -o ./AppTramitesNoPension0423 -r win-x64 --self-contained true -p:PublishReadyToRun=false
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: website
+        path: SimpleFeedReader/website/**
+        if-no-files-found: error
  
