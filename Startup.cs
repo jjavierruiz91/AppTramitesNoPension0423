@@ -32,9 +32,9 @@ namespace Aplicativo.net
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
             services.AddSwaggerDocument();
             services.AddControllersWithViews();
-            //services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=PROLIANT-DEV\SQLEXPRESS;Database=AppTramites;Trusted_Connection=True;"));
+            services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=PROLIANT-DEV\SQLEXPRESS;Database=AppTramites;Trusted_Connection=True;"));
 
-            services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=localhost;Database=localhost;User=SA;Password=Andres12;ConnectRetryCount=0;MultipleActiveResultSets=true;Trusted_Connection=False;"));
+            //services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=localhost;Database=localhost;User=SA;Password=Andres12;ConnectRetryCount=0;MultipleActiveResultSets=true;Trusted_Connection=False;"));
             // services.AddDbContext<AplicativoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
             services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
