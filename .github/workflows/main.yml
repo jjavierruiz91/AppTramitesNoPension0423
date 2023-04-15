@@ -40,6 +40,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: website
-        path: SimpleFeedReader/website/**
+        path: ./AppTramitesNoPension0423
         if-no-files-found: error
  
