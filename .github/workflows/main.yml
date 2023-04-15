@@ -35,7 +35,7 @@ jobs:
     - name: Build
       run: |
         dotnet build --configuration Release --no-restore
-        dotnet publish -c Release -o ./AppTramitesNoPension0423 -r win-x64 --self-contained true -p:PublishReadyToRun=false
+        dotnet publish -c Release -o ./AppTramitesNoPension0423 -r win-x64 -p:PublishReadyToRun=false
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
