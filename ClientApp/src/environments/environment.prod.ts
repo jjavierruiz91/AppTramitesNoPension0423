@@ -5,7 +5,7 @@ export const environment = {
   ///private
   //api_url: 'http://192.168.0.156:2022/'
  ///nueva public
-  api_url: 'http://186.84.72.154/'
+  api_url: 'http://186.84.72.154:2022/'
  ///antigua publica
   //api_url: 'http://186.118.163.226:9060/'
 };
