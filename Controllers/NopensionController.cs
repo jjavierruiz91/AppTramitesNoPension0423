@@ -25,6 +25,7 @@ namespace Aplicativo.net.Controllers
     private readonly IWebHostEnvironment _appEnvironment;
     private readonly IConfiguration _config;
 
+    private readonly int records = 10;
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
       _context = context;
@@ -34,9 +35,21 @@ namespace Aplicativo.net.Controllers
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<nopension>>> GetTramites()
+    public async Task<IActionResult> GetTramites([FromQuery] int? page)
     {
-      return await _context.Nopension.ToListAsync();
+      int _page = page ?? 1;
+      int totalRecords = await _context.Nopension.CountAsync();
+      int total_pages = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(totalRecords / records)));
+      var pensiones = await _context.Nopension.Skip((_page * 1) * records).Take(records).ToListAsync();
+
+      return Ok(
+        new
+        {
+          pages = total_pages,
+          docs = pensiones,
+          total_docs = totalRecords,
+          current_page = _page
+        });
     }
 
 
