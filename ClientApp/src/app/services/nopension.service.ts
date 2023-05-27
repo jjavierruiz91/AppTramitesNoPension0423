@@ -21,10 +21,10 @@ export class NopensionService {
     return this.http.get(url, { responseType: "blob" })
   }
 
-  getPensionAll(page?: number): Observable<any> {
-    const params = new HttpParams().set('page', page.toString() ?? '10');
+  getPensionAll(page: number = 1): Observable<any> {
+    const params = new HttpParams().set('page', page.toString());
 
-    const url = `${environment.api_url + 'api/Nopension/certificado-nopension'}`;
+    const url = `${environment.api_url + 'api/Nopension'}`;
     return this.http.get(url, { params })
   }
 }

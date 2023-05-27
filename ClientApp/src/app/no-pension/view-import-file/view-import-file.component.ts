@@ -33,7 +33,7 @@ export class ViewImportFileComponent implements OnInit {
     this.noPensionService.getPensionAll().subscribe({
       next: (value) => {
         console.log('value', value);
-        this.pension = value;
+        this.pension = value.records;
       },
     })
   }
