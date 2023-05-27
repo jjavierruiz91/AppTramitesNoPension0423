@@ -22,7 +22,10 @@ export class ViewImportFileComponent implements OnInit {
     { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' }
 
   ]
-
+  pagination: any;
+  page = 1;
+  pageSize = 4;
+  collectionSize = 0;
   constructor(private noPensionService: NopensionService) { }
 
   ngOnInit() {
@@ -33,6 +36,9 @@ export class ViewImportFileComponent implements OnInit {
     this.noPensionService.getPensionAll().subscribe({
       next: (value) => {
         console.log('value', value);
+        this.page = value.page;
+        this.pageSize = 10;
+        this.collectionSize = value.total_records;
         this.pension = value.records;
       },
     })
