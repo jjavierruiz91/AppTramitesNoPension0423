@@ -344,6 +344,12 @@ const routes: Routes = [
   { path: 'DetallesCerti/:detalleCerti', component: CertificadosDetallesComponent, canActivate: [FuncionarioTICGuard] },
   { path: 'HistorialGeneral', component: GeneralHistorialComponent, canActivate: [FuncionarioTICGuard] },
 
+  //Path for no pesion
+
+  {
+    path: 'pension',
+    loadChildren: () => import('../app/no-pension/no-pension.module').then((m) => m.NoPensionModule),
+  },
 
   //OTROS
   { path: 'Inscripcion', component: InscripcionDignatariosComponent },
