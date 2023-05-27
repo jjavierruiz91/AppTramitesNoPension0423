@@ -46,8 +46,8 @@ namespace Aplicativo.net.Controllers
         new
         {
           pages = total_pages,
-          docs = pensiones,
-          total_docs = totalRecords,
+          records = pensiones,
+          total_records = totalRecords,
           current_page = _page
         });
     }

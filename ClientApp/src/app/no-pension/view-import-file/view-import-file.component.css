@@ -10,6 +10,7 @@
 }
 
 .container__footer {
+  display: none;
 }
 
 .container__title {
