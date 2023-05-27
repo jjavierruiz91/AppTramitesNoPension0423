@@ -3,5 +3,31 @@
     <h1>Gestion de tramite no pension</h1>
   </div>
 
-  <div class="container__body"></div>
+  <div class="container__body contenedor-tramites-g col-xl-12">
+    <div class="contenedor-tramites">
+      <table
+        id="table_id"
+        class="table table-responsive-xl table-striped table-hover"
+      >
+        <thead class="table" style="background-color: #4193f2">
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Identificacion</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of pension; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ user.identification }}</td>
+            <td>{{ user.nombrecompleto }}</td>
+            <td>{{ user.estado }}</td>
+            <td><a class="btn btn-primary">Gestionar</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>
