@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
-using MiniExcelLibs;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.HSSF.UserModel;
 
 public class ImportFile
 {
-  public string nombre { get; set; }
-  public string identificado { get; set; }
- // public string estado { get; set; }
+  public string Identificacion { get; set; }
+  public string Nombrecompleto { get; set; }
+  public string estado { get; set; }
 }
 
 
@@ -20,33 +22,34 @@ namespace Aplicativo.net.Utilities.FileHelper
   public class FileHelper
   {
 
-    public static List<ImportFile> ReadFile(string basePath)
+    public static List<ImportFile> ReadFile(IFormFile file)
     {
       List<ImportFile> list = new List<ImportFile>();
-      using (var stream = File.OpenRead(basePath))
+
+      Stream stream = file.OpenReadStream();
+
+      IWorkbook MiExcel = null;
+
+      MiExcel = new XSSFWorkbook(stream);
+
+      ISheet HojaExcel = MiExcel.GetSheetAt(0);
+
+      int cantidadFilas = HojaExcel.LastRowNum;
+
+
+      for (int i = 1; i <= cantidadFilas; i++)
       {
-          var rows = stream.Query().ToList();
-                      
-      
-        
-      Console.WriteLine(rows[0].nombre);
-          
-      }
-         
-      using (var reader = MiniExcel.GetReader(basePath, true))
-      {
-        while (reader.Read())
+
+        IRow fila = HojaExcel.GetRow(i);
+
+        list.Add(new ImportFile
         {
-        
-          for (int i = 0; i < reader.FieldCount; i++)
-          {
-            
-              Console.WriteLine(i);
-          
-             
-          }
-        }
+          Identificacion = fila.GetCell(0).ToString(),
+          Nombrecompleto = fila.GetCell(1).ToString(),
+          estado = fila.GetCell(2).ToString(),
+        });
       }
+
       return list;
     }
 

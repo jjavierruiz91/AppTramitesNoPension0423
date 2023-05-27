@@ -15,7 +15,6 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using Microsoft.AspNetCore.Hosting;
 using Aplicativo.net.Utilities.FileHelper;
-using Aplicativo.net.DTOs;
 
 namespace Aplicativo.net.Controllers
 {
@@ -56,19 +55,18 @@ namespace Aplicativo.net.Controllers
 
 
     [HttpPost]
-    public async Task<IActionResult> ImportFile([FromForm] DocumentoDto request)
+    public async Task<IActionResult> ImportFile([FromForm] IFormFile request)
     {
       var path = _appEnvironment.ContentRootPath;
-      var ruta = _config.GetSection("routeImportFile").Value+ Guid.NewGuid().ToString("N") + ".xlsx";
+      var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.Month + Guid.NewGuid().ToString("N");
       var staticPath = Path.Combine(path, ruta);
-      Console.WriteLine(staticPath);
-      Console.WriteLine(request);
-      using (var stream = System.IO.File.Create(staticPath))
+
+      using (var stream = new FileStream(staticPath, FileMode.Create))
       {
-        request.Archive.CopyTo(stream);
+        request.CopyTo(stream);
       }
 
-      var data = FileHelper.ReadFile(staticPath);
+      var data = FileHelper.ReadFile(request);
 
       return Ok(data);
     }
