@@ -8,12 +8,13 @@ using Aplicativo.net.Models;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.AspNetCore.Http;
 using iTextSharp;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using Microsoft.AspNetCore.Hosting;
+using Aplicativo.net.Utilities.FileHelper;
 
 namespace Aplicativo.net.Controllers
 {
@@ -52,6 +53,23 @@ namespace Aplicativo.net.Controllers
         });
     }
 
+
+    [HttpPost]
+    public async Task<IActionResult> ImportFile([FromForm] IFormFile request)
+    {
+      var path = _appEnvironment.ContentRootPath;
+      var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.ToString();
+      var staticPath = Path.Combine(path, ruta);
+
+      using (var stream = System.IO.File.Create(staticPath))
+      {
+        request.CopyTo(stream);
+      }
+
+      var data = FileHelper.ReadFile(path);
+
+      return Ok(data);
+    }
 
     // GET: api/Task/5
     [HttpGet("certificado-nopension/{id}")]
