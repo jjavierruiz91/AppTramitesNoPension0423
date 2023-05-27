@@ -1,7 +1,9 @@
-.contanier__footer {
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
+.container__footer-button {
+  display: flex;
+  margin-left: 60px;
+  width: 300px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 element.style {
