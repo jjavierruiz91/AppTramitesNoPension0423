@@ -21,8 +21,8 @@ export class NopensionService {
     return this.http.get(url, { responseType: "blob" })
   }
 
-  getPensionAll(id: string): Observable<any> {
-    const url = `${environment.api_url + 'api/Nopension/certificado-nopension'}/${id}`;
-    return this.http.get(url, { responseType: "blob" })
+  getPensionAll(): Observable<any> {
+    const url = `${environment.api_url + 'api/Nopension/certificado-nopension'}`;
+    return this.http.get(url)
   }
 }
