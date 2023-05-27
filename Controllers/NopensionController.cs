@@ -58,10 +58,10 @@ namespace Aplicativo.net.Controllers
     public async Task<IActionResult> ImportFile([FromForm] IFormFile request)
     {
       var path = _appEnvironment.ContentRootPath;
-      var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.ToString();
+      var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.Month + Guid.NewGuid().ToString("N");
       var staticPath = Path.Combine(path, ruta);
 
-      using (var stream = System.IO.File.Create(staticPath))
+      using (var stream = new FileStream(staticPath,FileMode.Create))
       {
         request.CopyTo(stream);
       }
