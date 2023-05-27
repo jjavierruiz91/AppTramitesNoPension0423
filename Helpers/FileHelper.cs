@@ -9,9 +9,9 @@ using MiniExcelLibs;
 
 public class ImportFile
 {
-  public string Identificacion { get; set; }
-  public string Nombrecompleto { get; set; }
-  public string estado { get; set; }
+  public string nombre { get; set; }
+  public string identificado { get; set; }
+ // public string estado { get; set; }
 }
 
 
@@ -23,18 +23,30 @@ namespace Aplicativo.net.Utilities.FileHelper
     public static List<ImportFile> ReadFile(string basePath)
     {
       List<ImportFile> list = new List<ImportFile>();
-
+      using (var stream = File.OpenRead(basePath))
+      {
+          var rows = stream.Query().ToList();
+                      
+      
+        
+      Console.WriteLine(rows[0].nombre);
+          
+      }
+         
       using (var reader = MiniExcel.GetReader(basePath, true))
       {
         while (reader.Read())
         {
+        
           for (int i = 0; i < reader.FieldCount; i++)
           {
-            list.Add((ImportFile)reader.GetValue(i));
+            
+              Console.WriteLine(i);
+          
+             
           }
         }
       }
-
       return list;
     }
 
