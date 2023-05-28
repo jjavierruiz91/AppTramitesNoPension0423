@@ -15,6 +15,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using Microsoft.AspNetCore.Hosting;
 using Aplicativo.net.Utilities.FileHelper;
+using Aplicativo.net.DTOs;
 
 namespace Aplicativo.net.Controllers
 {
@@ -55,7 +56,7 @@ namespace Aplicativo.net.Controllers
 
 
     [HttpPost]
-    public async Task<IActionResult> ImportFile([FromForm] IFormFile request)
+    public async Task<IActionResult> ImportFile([FromForm] ImportFIleDto request)
     {
       var path = _appEnvironment.ContentRootPath;
       var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.Month + Guid.NewGuid().ToString("N");
@@ -63,12 +64,29 @@ namespace Aplicativo.net.Controllers
 
       using (var stream = new FileStream(staticPath, FileMode.Create))
       {
-        request.CopyTo(stream);
+        request.Archive.CopyTo(stream);
       }
 
-      var data = FileHelper.ReadFile(request);
+      var dataExcel = FileHelper.ReadFile(request.Archive);
+      
+      foreach (var item in dataExcel)
+      {
+       var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion);
 
-      return Ok(data);
+        if(user != null) continue;
+
+
+        var createUser = new nopension{
+            Identificacion = item.Identificacion,
+            Nombrecompleto = item.Nombrecompleto,
+            estado = item.estado
+        };
+      
+        _context.Nopension.Add(createUser);
+      }  
+
+       await _context.SaveChangesAsync();
+      return  Ok(new { mensaje = "Se guardo correctamente los usuario" });
     }
 
     // GET: api/Task/5
