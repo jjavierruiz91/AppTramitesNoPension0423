@@ -6,10 +6,11 @@ import { ViewImportFileComponent } from './view-import-file/view-import-file.com
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuModule } from '../menu/menu.module';
+import { ViewUpdateUserComponent } from './view-update-user/view-update-user.component';
 
 
 @NgModule({
-  declarations: [ViewImportFileComponent],
+  declarations: [ViewImportFileComponent, ViewUpdateUserComponent],
   imports: [
     CommonModule,
     NoPensionRoutingModule,
