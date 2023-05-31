@@ -16,6 +16,10 @@ using iTextSharp.text.pdf.draw;
 using Microsoft.AspNetCore.Hosting;
 using Aplicativo.net.Utilities.FileHelper;
 using Aplicativo.net.DTOs;
+ 
+using System.Threading;
+using Microsoft.Extensions.Hosting;
+
 
 namespace Aplicativo.net.Controllers
 {
@@ -26,7 +30,7 @@ namespace Aplicativo.net.Controllers
     private readonly AplicativoContext _context;
     private readonly IWebHostEnvironment _appEnvironment;
     private readonly IConfiguration _config;
-
+   
     private readonly int records = 10;
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
@@ -59,7 +63,7 @@ namespace Aplicativo.net.Controllers
     public async Task<IActionResult> ImportFile([FromForm] ImportFIleDto request)
     {
       var path = _appEnvironment.ContentRootPath;
-      var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.Month + Guid.NewGuid().ToString("N");
+      var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.Month + Guid.NewGuid().ToString("N") + ".xlsx";
       var staticPath = Path.Combine(path, ruta);
 
       using (var stream = new FileStream(staticPath, FileMode.Create))
@@ -68,14 +72,15 @@ namespace Aplicativo.net.Controllers
       }
 
       var dataExcel = FileHelper.ReadFile(request.Archive);
+
+         try
+    {
       
-      foreach (var item in dataExcel)
-      {
-       var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion);
-
-        if(user != null) continue;
-
-
+       foreach (var item in dataExcel)
+        {
+       var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
+      
+       
         var createUser = new nopension{
             Identificacion = item.Identificacion,
             Nombrecompleto = item.Nombrecompleto,
@@ -86,8 +91,30 @@ namespace Aplicativo.net.Controllers
       }  
 
        await _context.SaveChangesAsync();
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error al consultar el objeto por ID: {ex.Message}");
+        // Manejar la excepción según sea necesario
+      // Otra acción adecuada en caso de error
+    }
+
+     
+         Console.WriteLine("se esta ejecutnd");
       return  Ok(new { mensaje = "Se guardo correctamente los usuario" });
     }
+
+    private DbContextOptions<AplicativoContext> GetDbContextOptions()
+{
+    // Aquí debes proporcionar las opciones adecuadas para la configuración de tu contexto
+    // Puedes utilizar métodos de configuración como UseSqlServer, UseInMemoryDatabase, etc.
+    // Ejemplo:
+    var optionsBuilder = new DbContextOptionsBuilder<AplicativoContext>();
+    optionsBuilder.UseSqlServer(_config.GetConnectionString("SQLConnection")); // Reemplaza "cadena_de_conexion" con tu cadena de conexión real
+    return optionsBuilder.Options;
+}
+
 
     // GET: api/Task/5
     [HttpGet("certificado-nopension/{id}")]
@@ -291,5 +318,6 @@ namespace Aplicativo.net.Controllers
       //fileStream.Close();
       //return fileUpload;
     }
+
   }
 }

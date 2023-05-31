@@ -14,6 +14,14 @@ public class ImportFile
   public string Identificacion { get; set; }
   public string Nombrecompleto { get; set; }
   public string estado { get; set; }
+
+  public ImportFile(string identificacion, string nombrecompleto, string estado)
+    {
+        this.Identificacion = identificacion;
+        this.Nombrecompleto = nombrecompleto;
+        this.estado = estado;
+    }
+
 }
 
 
@@ -28,26 +36,22 @@ namespace Aplicativo.net.Utilities.FileHelper
 
       Stream stream = file.OpenReadStream();
 
-      IWorkbook MiExcel = null;
-
-      MiExcel = new XSSFWorkbook(stream);
+      IWorkbook MiExcel = new XSSFWorkbook(stream);
 
       ISheet HojaExcel = MiExcel.GetSheetAt(0);
+      
 
       int cantidadFilas = HojaExcel.LastRowNum;
-
+      Console.WriteLine(cantidadFilas);
 
       for (int i = 1; i <= cantidadFilas; i++)
       {
-
+          
         IRow fila = HojaExcel.GetRow(i);
+         Console.WriteLine(fila.GetCell(0).ToString());
 
-        list.Add(new ImportFile
-        {
-          Identificacion = fila.GetCell(0).ToString(),
-          Nombrecompleto = fila.GetCell(1).ToString(),
-          estado = fila.GetCell(2).ToString(),
-        });
+          ImportFile import2 = new ImportFile(fila.GetCell(0).ToString(), fila.GetCell(1).ToString(), fila.GetCell(2).ToString());
+        list.Add(import2);
       }
 
       return list;
