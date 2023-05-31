@@ -7,25 +7,13 @@ import { NopensionService } from 'src/app/services/nopension.service';
   styleUrls: ['./view-import-file.component.css']
 })
 export class ViewImportFileComponent implements OnInit {
-  pension = [
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'jubilado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'jubilado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'jubilado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'jubilado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' },
-    { identification: 1122222, nombrecompleto: 'Andres', estado: 'pensionado' }
-
-  ]
+  pension = []
   pagination: any;
+
   page = 1;
-  pageSize = 4;
-  collectionSize = 0;
+  pageSize = 10;
+  collectionSize = 300;
+  currentPage = 1;
   files: any[] = [];
   constructor(private noPensionService: NopensionService) { }
 
@@ -33,11 +21,9 @@ export class ViewImportFileComponent implements OnInit {
     this.onEventLoadPension();
   }
 
-  onEventLoadPension() {
-    this.noPensionService.getPensionAll().subscribe({
+  onEventLoadPension(page: number = 1) {
+    this.noPensionService.getPensionAll(page).subscribe({
       next: (value) => {
-        this.page = value.page;
-        this.pageSize = 10;
         this.collectionSize = value.total_records;
         this.pension = value.records;
       },
@@ -65,7 +51,10 @@ export class ViewImportFileComponent implements OnInit {
         this.noPensionService.showMessageError("Ocurrio un error al cargar el documento contactate con el administrador", "Error!")
       },
     })
+  }
 
+  onEventRefreshData() {
+    this.onEventLoadPension(this.page);
   }
 
 }

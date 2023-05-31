@@ -80,7 +80,8 @@ namespace Aplicativo.net.Controllers
        foreach (var item in dataExcel)
         {
        var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
-      
+         
+         if(user != null) continue;
        
         var createUser = new nopension{
             Identificacion = item.Identificacion,

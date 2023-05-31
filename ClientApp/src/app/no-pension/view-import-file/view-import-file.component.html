@@ -33,7 +33,7 @@
         <tbody>
           <tr *ngFor="let user of pension; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ user.identification }}</td>
+            <td>{{ user.identificacion }}</td>
             <td>{{ user.nombrecompleto }}</td>
             <td>{{ user.estado }}</td>
             <td><a class="btn btn-primary">Gestionar</a></td>
@@ -45,16 +45,13 @@
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination
         [collectionSize]="collectionSize"
-        [(page)]="page"
+        [(page)]="page" 
         [pageSize]="pageSize"
-      >
-      </ngb-pagination>
-
-      <select class="form-select" style="width: auto" [(ngModel)]="pageSize">
-        <option [ngValue]="2">2 items per page</option>
-        <option [ngValue]="4">4 items per page</option>
-        <option [ngValue]="6">6 items per page</option>
-      </select>
+        [maxSize]="5"
+        (pageChange)="onEventRefreshData()"
+      > 
+      </ngb-pagination> 
+     
     </div>
   </div>
 </section>
