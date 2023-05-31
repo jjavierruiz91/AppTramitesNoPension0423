@@ -40,6 +40,10 @@
   background-color: #fff;
 }
 
+.table > thead{
+  background-color: #dadbf3;
+}
+
 .table >td{
   padding: 0.35rem;
 }

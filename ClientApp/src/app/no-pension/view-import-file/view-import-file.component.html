@@ -23,7 +23,7 @@
         id="table_id"
         class="table table-responsive-xl table-striped table-hover"
       >
-        <thead class="table" style="background-color: #4193f2">
+        <thead class="table">
           <tr>
             <th scope="col">No</th>
             <th scope="col">Identificacion</th>
@@ -46,9 +46,9 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination
-        [collectionSize]="collectionSize"
+        [(collectionSize)]="collectionSize"
         [(page)]="page" 
-        [pageSize]="pageSize"
+        [(pageSize)]="pageSize"
         [maxSize]="5"
         (pageChange)="onEventRefreshData()"
       > 
