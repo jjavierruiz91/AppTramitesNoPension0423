@@ -29,7 +29,7 @@ namespace Aplicativo.net.Utilities.FileHelper
 {
   public class FileHelper
   {
-      
+
     public List<ImportFile> ReadFile(IFormFile file)
     {
       List<ImportFile> list = new List<ImportFile>();
@@ -43,12 +43,12 @@ namespace Aplicativo.net.Utilities.FileHelper
           IWorkbook MiExcel = new XSSFWorkbook(stream);
           ISheet HojaExcel = MiExcel.GetSheetAt(0);
           int cantidadFilas = HojaExcel.LastRowNum;
-        
+
           for (int i = 1; i <= cantidadFilas; i++)
           {
 
             IRow fila = HojaExcel.GetRow(i);
-             
+
             string identificacion = fila.GetCell(0)?.ToString() ?? string.Empty;
             string nombrecompleto = fila.GetCell(1)?.ToString() ?? string.Empty;
             string estado = fila.GetCell(2)?.ToString() ?? string.Empty;
@@ -74,12 +74,12 @@ namespace Aplicativo.net.Utilities.FileHelper
 
     public bool deleteFile(string path)
     {
-      if (!System.IO.File.Exists(filePath))
+      if (!System.IO.File.Exists(path))
       {
-       return false; 
+        return false;
       }
 
-      System.IO.File.Delete(filePath);
+      System.IO.File.Delete(path);
       return true;
     }
   }
