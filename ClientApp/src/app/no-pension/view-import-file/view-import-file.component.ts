@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NopensionService } from 'src/app/services/nopension.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class ViewImportFileComponent implements OnInit {
   collectionSize = 0;
   currentPage = 1;
   files: any[] = [];
-  constructor(private noPensionService: NopensionService) { }
+  constructor(private noPensionService: NopensionService, private router: Router) { }
 
   ngOnInit() {
     this.onEventLoadPension();
@@ -56,6 +57,10 @@ export class ViewImportFileComponent implements OnInit {
 
   onEventRefreshData() {
     this.onEventLoadPension(this.page);
+  }
+
+  onEventUpdateUser(userId: string) {
+    this.router.navigate(["pension/update", userId])
   }
 
 }

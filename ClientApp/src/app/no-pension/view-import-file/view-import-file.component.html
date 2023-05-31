@@ -20,7 +20,6 @@
   <div class="container__body contenedor-tramites-g col-xl-12">
     <div class="contenedor-tramites">
       <table
-        id="table_id"
         class="table table-responsive-xl table-striped table-hover"
       >
         <thead class="table">
@@ -38,7 +37,7 @@
             <td>{{ user.identificacion }}</td>
             <td>{{ user.nombrecompleto }}</td>
             <td>{{ user.estado }}</td>
-            <td><a class="btn btn-primary">Gestionar</a></td>
+            <td><a class="btn btn-primary" (click)="onEventUpdateUser(user.identificacion)">Gestionar</a></td>
           </tr>
         </tbody>
       </table>
