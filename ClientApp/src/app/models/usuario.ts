@@ -20,3 +20,15 @@ export class ForgotPassword {
     ClientURI!: string;
     estado!: string;
 }
+
+export enum UserRoles {
+    Usuario = "Usuario",
+    Admin = "Admin",
+    FuncionarioHacienda = "FuncionarioHacienda",
+    FuncionarioDeporte = "FuncionarioDeporte",
+    FuncionarioTIC = "FuncionarioTIC",
+    FuncionarioGobiernoTramites = "FuncionarioGobiernoTramites",
+    FuncionarioGobierno = "FuncionarioGobierno",
+    AsuntosInternos = "AsuntosInternos",
+    FuncionarioNoPension = "FuncionarioNoPension"
+}

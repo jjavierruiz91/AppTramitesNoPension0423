@@ -161,6 +161,7 @@ import { AdminCertificadosDetallesComponent } from './Administrador/GestionFunci
 import { AdminHistorialComponent } from './Administrador/GestionFuncionarios/DetalleReportesCertificados/historialAdmin/historialAdmin.component';
 //CERTIFICADO DE NO PENSION RUTAS
 import { NoPensionComponent } from './Certificado-no-pension/no-pension.component';
+import { AuthGenericGuard } from './auth/auth-generics.guard';
 
 
 
@@ -348,6 +349,7 @@ const routes: Routes = [
 
   {
     path: 'pension',
+    canActivate: [AuthGenericGuard],
     loadChildren: () => import('../app/no-pension/no-pension.module').then((m) => m.NoPensionModule),
   },
 

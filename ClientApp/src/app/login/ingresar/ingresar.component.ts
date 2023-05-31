@@ -21,7 +21,7 @@ export class IngresarComponent implements OnInit {
 
   ngOnInit(): void {
     this.onLogout();
-    if (localStorage.getItem('token') != null){
+    if (localStorage.getItem('token') != null) {
       this.router.navigateByUrl('Ingresar');
     }
     this.registerForm = this.formBuilder.group({
@@ -70,34 +70,37 @@ export class IngresarComponent implements OnInit {
           } else if (this.rol == "Usuario") {
             this.toastr.success('Bienvenid@ ' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenido Usuario!');
             this.router.navigate(['InicioUsuario']);
-          } else if(this.rol == "FuncionarioDeporte") {
+          } else if (this.rol == "FuncionarioDeporte") {
             this.toastr.success('Bienvenid@ Funcionari@ ' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ Deporte!');
             this.router.navigate(['InicioFuncionarioDeporte']);
-          }else if(this.rol == "FuncionarioGobierno") {
+          } else if (this.rol == "FuncionarioGobierno") {
             this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ Gobierno!');
             this.router.navigate(['InicioFuncionarioGobierno']);
-          }else if(this.rol == "AsuntosInternos")
-          {
+          } else if (this.rol == "AsuntosInternos") {
             this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ Asuntos Internos!');
             this.router.navigate(['InicioAsuntosInternos']);
 
-          }else if(this.rol == "FuncionarioGobiernoTramites")
-           {
+          } else if (this.rol == "FuncionarioGobiernoTramites") {
             this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ Gobierno Tramites!');
             this.router.navigate(['InicioFuncionarioGobiernoTramites']);
-            
-          }else if(this.rol == "FuncionarioHacienda") {
+
+          } else if (this.rol == "FuncionarioHacienda") {
             this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ De Hacienda!');
             this.router.navigate(['InicioFuncionarioHacienda']);
 
-          }else if(this.rol == "FuncionarioTIC") {
+          } else if (this.rol == "FuncionarioTIC") {
             this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ De las TIC!');
-            this.router.navigate(['InicioFuncionarioTIC']); 
+            this.router.navigate(['InicioFuncionarioTIC']);
           }
 
-        } else if(res.mensaje){
+          if (this.rol == "FuncionarioNoPension") {
+            this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ De las TIC!');
+            this.router.navigate(['pension']);
+          }
+
+        } else if (res.mensaje) {
           this.toastr.error(res.mensaje, 'Error!');
-        }else{
+        } else {
           this.toastr.error('Correo o contraseña incorrecta!', 'Error!');
         }
       }, (err) => {
