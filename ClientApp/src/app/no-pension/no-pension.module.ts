@@ -5,6 +5,7 @@ import { NoPensionRoutingModule } from './no-pension-routing.module';
 import { ViewImportFileComponent } from './view-import-file/view-import-file.component';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MenuModule } from '../menu/menu.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgbTypeaheadModule,
     NgbPaginationModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MenuModule
   ]
 })
 export class NoPensionModule { }
