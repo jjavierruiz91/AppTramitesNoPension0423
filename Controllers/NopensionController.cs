@@ -32,11 +32,25 @@ namespace Aplicativo.net.Controllers
     private readonly IConfiguration _config;
 
     private readonly int records = 10;
+    
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
       _context = context;
       _appEnvironment = appEnvironment;
       _config = config;
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<nopension>> GetUserNoPension(string id)
+    {
+        var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
+        
+        if (user == null)
+        {
+           return BadRequest(new { mensaje = "Usuario no encontrado" });
+        }
+
+        return user;
     }
 
 
