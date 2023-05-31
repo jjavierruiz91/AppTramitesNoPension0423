@@ -70,8 +70,9 @@ namespace Aplicativo.net.Controllers
       {
         request.Archive.CopyTo(stream);
       }
+      FileHelper a = new FileHelper();
 
-      var dataExcel = FileHelper.ReadFile(request.Archive);
+      var dataExcel = a.ReadFile(request.Archive);
 
          try
     {
@@ -96,12 +97,8 @@ namespace Aplicativo.net.Controllers
     catch (Exception ex)
     {
         Console.WriteLine($"Error al consultar el objeto por ID: {ex.Message}");
-        // Manejar la excepción según sea necesario
-      // Otra acción adecuada en caso de error
-    }
-
-     
-         Console.WriteLine("se esta ejecutnd");
+      
+    } 
       return  Ok(new { mensaje = "Se guardo correctamente los usuario" });
     }
 

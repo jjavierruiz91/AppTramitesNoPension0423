@@ -29,15 +29,10 @@ namespace Aplicativo.net.Utilities.FileHelper
 {
   public class FileHelper
   {
-
-    public static List<ImportFile> ReadFile(IFormFile file)
+      
+    public List<ImportFile> ReadFile(IFormFile file)
     {
       List<ImportFile> list = new List<ImportFile>();
-
-      // Stream stream = file.OpenReadStream();
-
-      // IWorkbook MiExcel = new XSSFWorkbook(stream);
-
 
       if (file != null)
       {
@@ -55,9 +50,12 @@ namespace Aplicativo.net.Utilities.FileHelper
           {
 
             IRow fila = HojaExcel.GetRow(i);
-            Console.WriteLine(fila.GetCell(0).ToString());
+             
+            string identificacion = fila.GetCell(0)?.ToString() ?? string.Empty;
+            string nombrecompleto = fila.GetCell(1)?.ToString() ?? string.Empty;
+            string estado = fila.GetCell(2)?.ToString() ?? string.Empty;
 
-            ImportFile import2 = new ImportFile(fila.GetCell(0).ToString(), fila.GetCell(1).ToString(), fila.GetCell(2).ToString());
+            ImportFile import2 = new ImportFile(identificacion, nombrecompleto, estado);
             list.Add(import2);
           }
 
