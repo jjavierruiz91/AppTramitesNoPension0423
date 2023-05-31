@@ -16,11 +16,11 @@ public class ImportFile
   public string estado { get; set; }
 
   public ImportFile(string identificacion, string nombrecompleto, string estado)
-    {
-        this.Identificacion = identificacion;
-        this.Nombrecompleto = nombrecompleto;
-        this.estado = estado;
-    }
+  {
+    this.Identificacion = identificacion;
+    this.Nombrecompleto = nombrecompleto;
+    this.estado = estado;
+  }
 
 }
 
@@ -34,24 +34,43 @@ namespace Aplicativo.net.Utilities.FileHelper
     {
       List<ImportFile> list = new List<ImportFile>();
 
-      Stream stream = file.OpenReadStream();
+      // Stream stream = file.OpenReadStream();
 
-      IWorkbook MiExcel = new XSSFWorkbook(stream);
+      // IWorkbook MiExcel = new XSSFWorkbook(stream);
 
-      ISheet HojaExcel = MiExcel.GetSheetAt(0);
-      
 
-      int cantidadFilas = HojaExcel.LastRowNum;
-      Console.WriteLine(cantidadFilas);
-
-      for (int i = 1; i <= cantidadFilas; i++)
+      if (file != null)
       {
-          
-        IRow fila = HojaExcel.GetRow(i);
-         Console.WriteLine(fila.GetCell(0).ToString());
+        Stream stream = file.OpenReadStream();
 
-          ImportFile import2 = new ImportFile(fila.GetCell(0).ToString(), fila.GetCell(1).ToString(), fila.GetCell(2).ToString());
-        list.Add(import2);
+        if (stream != null)
+        {
+          IWorkbook MiExcel = new XSSFWorkbook(stream);
+          ISheet HojaExcel = MiExcel.GetSheetAt(0);
+          // Resto del código
+          int cantidadFilas = HojaExcel.LastRowNum;
+          Console.WriteLine(cantidadFilas);
+
+          for (int i = 1; i <= cantidadFilas; i++)
+          {
+
+            IRow fila = HojaExcel.GetRow(i);
+            Console.WriteLine(fila.GetCell(0).ToString());
+
+            ImportFile import2 = new ImportFile(fila.GetCell(0).ToString(), fila.GetCell(1).ToString(), fila.GetCell(2).ToString());
+            list.Add(import2);
+          }
+
+        }
+        else
+        {
+          Console.WriteLine("Manejo de error: el flujo de lectura no se pudo abrir");
+        }
+      }
+      else
+      {
+        Console.WriteLine("Manejo de error: el archivo no se proporcionó correctamente");
+
       }
 
       return list;
