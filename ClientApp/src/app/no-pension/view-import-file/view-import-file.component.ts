@@ -11,8 +11,8 @@ export class ViewImportFileComponent implements OnInit {
   pagination: any;
 
   page = 1;
-  pageSize = 10;
-  collectionSize = 300;
+  pageSize: number = 10;
+  collectionSize = 0;
   currentPage = 1;
   files: any[] = [];
   constructor(private noPensionService: NopensionService) { }
@@ -25,6 +25,7 @@ export class ViewImportFileComponent implements OnInit {
     this.noPensionService.getPensionAll(page).subscribe({
       next: (value) => {
         this.collectionSize = value.total_records;
+        this.pageSize = value.records.length;
         this.pension = value.records;
       },
     })
