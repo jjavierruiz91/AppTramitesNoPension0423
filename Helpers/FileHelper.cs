@@ -72,6 +72,15 @@ namespace Aplicativo.net.Utilities.FileHelper
       return list;
     }
 
+    public bool deleteFile(string path)
+    {
+      if (!System.IO.File.Exists(filePath))
+      {
+       return false; 
+      }
 
+      System.IO.File.Delete(filePath);
+      return true;
+    }
   }
 }

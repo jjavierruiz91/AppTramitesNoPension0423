@@ -93,7 +93,8 @@ namespace Aplicativo.net.Controllers
       }  
 
        await _context.SaveChangesAsync();
-
+      
+      a.deleteFile(staticPath);
     }
     catch (Exception ex)
     {
