@@ -42,10 +42,8 @@ namespace Aplicativo.net.Utilities.FileHelper
         {
           IWorkbook MiExcel = new XSSFWorkbook(stream);
           ISheet HojaExcel = MiExcel.GetSheetAt(0);
-          // Resto del código
           int cantidadFilas = HojaExcel.LastRowNum;
-          Console.WriteLine(cantidadFilas);
-
+        
           for (int i = 1; i <= cantidadFilas; i++)
           {
 
