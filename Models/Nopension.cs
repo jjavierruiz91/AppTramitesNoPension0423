@@ -17,7 +17,7 @@ namespace Aplicativo.net.Models
         [JsonProperty("identificacion")] public string Identificacion { get; set; }
         [JsonProperty("nombrecompleto")] public string Nombrecompleto { get; set; }
         [JsonProperty("estado")] public string estado { get; set; }
-
+ 
 
  }
 

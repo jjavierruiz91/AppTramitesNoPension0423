@@ -186,6 +186,7 @@ import { GeneralHistorialComponent } from './Funcionario/FuncionarioTIC/Gestiona
 //  CERTIFICADO DE NO PENSION RUTAS
 import { NoPensionComponent } from './Certificado-no-pension/no-pension.component';
 import { CommonModule } from '@angular/common';
+import { MenuModule } from './menu/menu.module';
 
 @NgModule({
   imports: [
@@ -197,7 +198,8 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MenuModule
   ],
   declarations: [
     AppComponent,
@@ -255,7 +257,6 @@ import { CommonModule } from '@angular/common';
     ModuloFuncionarioComponent,
     ModuloAdminComponent,
     ModuloUsuarioComponent,
-    MenuFuncionarioComponent,
     ModuloFuncionarioGobiernoTramitesComponent,
     MenuFuncionarioGobiernoTramitesComponent,
     SeletionTipoTramiteComponent,
