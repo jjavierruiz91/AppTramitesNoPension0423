@@ -1,7 +1,18 @@
 <section class="container__nopension col-xs-12 col-md-12 col-lg-12 col-xl-12">
   <div class="container__title">
     <h1>Gestion de tramite no pension</h1>
-    <button class="btn btn-primary">Cargar excel</button>
+  </div>
+
+  <div class="container__title">
+    <form class="form">
+      <span class="form-title">Carga archivo de pensionados</span>
+      <p class="form-paragraph">
+          El archivo de ser de tipo .xlsx o .cvs 
+        </p>
+       <label for="file-input" class="drop-container">
+      <input accept=".xlsx, .cvs" (change)="onEventFIleSelected($event)" type="file" id="file-input">
+    </label>
+    </form>
   </div>
 
   <div class="container__body contenedor-tramites-g col-xl-12">

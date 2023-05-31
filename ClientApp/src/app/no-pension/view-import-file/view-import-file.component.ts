@@ -26,6 +26,7 @@ export class ViewImportFileComponent implements OnInit {
   page = 1;
   pageSize = 4;
   collectionSize = 0;
+  files: any[] = [];
   constructor(private noPensionService: NopensionService) { }
 
   ngOnInit() {
@@ -35,13 +36,36 @@ export class ViewImportFileComponent implements OnInit {
   onEventLoadPension() {
     this.noPensionService.getPensionAll().subscribe({
       next: (value) => {
-        console.log('value', value);
         this.page = value.page;
         this.pageSize = 10;
         this.collectionSize = value.total_records;
         this.pension = value.records;
       },
     })
+  }
+
+  onEventFIleSelected(e: any) {
+    this.files.push(e.target.files[0]);
+    this.onEventLoadFile();
+  }
+
+  onEventLoadFile() {
+    const formData = new FormData();
+
+    for (let index = 0; index < this.files.length; index++) {
+      formData.append("Archive", this.files[index]);
+    }
+
+    this.noPensionService.postLoadArchives(formData).subscribe({
+      next: (value) => {
+        console.log(value);
+        this.noPensionService.showMessageSuccess("Se cargo correctamente el archivo", "Enorabuena!")
+      },
+      error: (err) => {
+        this.noPensionService.showMessageError("Ocurrio un error al cargar el documento contactate con el administrador", "Error!")
+      },
+    })
+
   }
 
 }
