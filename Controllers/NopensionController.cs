@@ -320,5 +320,24 @@ namespace Aplicativo.net.Controllers
       //return fileUpload;
     }
 
+    [HttpPut("{id}")]
+     public async Task<IActionResult> PutUpdateUser(int id, UpdateUserNoPension user)
+    {
+         var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
+        
+        if (user == null)
+        {
+           return BadRequest(new { mensaje = "Usuario no encontrado" });
+        }
+
+        user.Estado = user.Estado.ToUpper();
+        user.TipoTramite = user.TipoTramite.ToUpper();
+        _context.Entry(itemStramite).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }>
+
+
   }
 }
