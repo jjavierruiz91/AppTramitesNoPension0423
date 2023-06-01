@@ -16,7 +16,7 @@ using iTextSharp.text.pdf.draw;
 using Microsoft.AspNetCore.Hosting;
 using Aplicativo.net.Utilities.FileHelper;
 using Aplicativo.net.DTOs;
- 
+
 using System.Threading;
 using Microsoft.Extensions.Hosting;
 
@@ -30,13 +30,27 @@ namespace Aplicativo.net.Controllers
     private readonly AplicativoContext _context;
     private readonly IWebHostEnvironment _appEnvironment;
     private readonly IConfiguration _config;
-   
+
     private readonly int records = 10;
+
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
       _context = context;
       _appEnvironment = appEnvironment;
       _config = config;
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<nopension>> GetUserNoPension(string id)
+    {
+      var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
+
+      if (user == null)
+      {
+        return BadRequest(new { mensaje = "Usuario no encontrado" });
+      }
+
+      return user;
     }
 
 
@@ -70,51 +84,40 @@ namespace Aplicativo.net.Controllers
       {
         request.Archive.CopyTo(stream);
       }
-      FileHelper a = new FileHelper();
+      FileHelper fileHeader = new FileHelper();
 
-      var dataExcel = a.ReadFile(request.Archive);
+      var dataExcel = fileHeader.ReadFile(request.Archive);
 
-         try
-    {
-      
-       foreach (var item in dataExcel)
+      try
+      {
+        foreach (var item in dataExcel)
         {
-       var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
-         
-         if(user != null) continue;
-       
-        var createUser = new nopension{
+          var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
+
+          if (user != null) continue;
+
+          var createUser = new nopension
+          {
             Identificacion = item.Identificacion,
             Nombrecompleto = item.Nombrecompleto,
             estado = item.estado
-        };
-      
-        _context.Nopension.Add(createUser);
-      }  
+          };
 
-       await _context.SaveChangesAsync();
+          _context.Nopension.Add(createUser);
+        }
 
+        await _context.SaveChangesAsync();
+
+        fileHeader.deleteFile(staticPath);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(new { mensaje = "Error al guardar la informacion del archivo excel" });
+      }
+      return Ok(new { mensaje = "Se guardo correctamente los usuario" });
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error al consultar el objeto por ID: {ex.Message}");
-      
-    } 
-      return  Ok(new { mensaje = "Se guardo correctamente los usuario" });
-    }
-
-    private DbContextOptions<AplicativoContext> GetDbContextOptions()
-{
-    // Aquí debes proporcionar las opciones adecuadas para la configuración de tu contexto
-    // Puedes utilizar métodos de configuración como UseSqlServer, UseInMemoryDatabase, etc.
-    // Ejemplo:
-    var optionsBuilder = new DbContextOptionsBuilder<AplicativoContext>();
-    optionsBuilder.UseSqlServer(_config.GetConnectionString("SQLConnection")); // Reemplaza "cadena_de_conexion" con tu cadena de conexión real
-    return optionsBuilder.Options;
-}
 
 
-    // GET: api/Task/5
     [HttpGet("certificado-nopension/{id}")]
     public async Task<ActionResult> GetNopension(string id)
     {
@@ -316,6 +319,26 @@ namespace Aplicativo.net.Controllers
       //fileStream.Close();
       //return fileUpload;
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutUpdateUser(string id, UpdateUserNoPension payload)
+    {
+      var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
+
+      if (user == null)
+      {
+        return BadRequest(new { mensaje = "Usuario no encontrado" });
+      }
+
+      user.Nombrecompleto = payload.Nombrecompleto;
+      user.estado = payload.estado;
+
+      _context.Entry(user).State = EntityState.Modified;
+      await _context.SaveChangesAsync();
+
+      return Ok(new { mensaje = "Usuario actualizado" });
+    }
+
 
   }
 }

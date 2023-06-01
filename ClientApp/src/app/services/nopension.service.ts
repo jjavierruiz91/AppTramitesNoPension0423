@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Nopension } from '../models/nopension';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { UserNoPension } from '../models/usuario';
 
 
 const httpOptions = {
@@ -22,6 +23,11 @@ export class NopensionService {
     return this.http.get(url, { responseType: "blob" })
   }
 
+  getUserByIdentification(identification: string): Observable<UserNoPension> {
+    const url = `${environment.api_url + 'api/Nopension'}/${identification}`;
+    return this.http.get<UserNoPension>(url)
+  }
+
   getPensionAll(page: number = 1): Observable<any> {
     const params = new HttpParams().set('page', page.toString());
 
@@ -32,6 +38,11 @@ export class NopensionService {
   postLoadArchives(Archive: FormData): Observable<any> {
     const url = `${environment.api_url + 'api/Nopension'}`;
     return this.http.post(url, Archive)
+  }
+
+  putUpdateUserNoPension(payload: UserNoPension): Observable<string> {
+    const url = `${environment.api_url + 'api/Nopension'}/${payload.identificacion}`;
+    return this.http.put<string>(url, payload);
   }
 
   showMessageSuccess(message: string, title: string) {

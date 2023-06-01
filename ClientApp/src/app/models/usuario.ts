@@ -32,3 +32,11 @@ export enum UserRoles {
     AsuntosInternos = "AsuntosInternos",
     FuncionarioNoPension = "FuncionarioNoPension"
 }
+
+
+export interface UserNoPension {
+    codsolicitante: number,
+    estado: string,
+    identificacion: string,
+    nombrecompleto: string,
+}

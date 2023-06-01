@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NopensionService } from 'src/app/services/nopension.service';
 
 @Component({
@@ -11,11 +12,11 @@ export class ViewImportFileComponent implements OnInit {
   pagination: any;
 
   page = 1;
-  pageSize = 10;
-  collectionSize = 300;
+  pageSize: number = 10;
+  collectionSize = 0;
   currentPage = 1;
   files: any[] = [];
-  constructor(private noPensionService: NopensionService) { }
+  constructor(private noPensionService: NopensionService, private router: Router) { }
 
   ngOnInit() {
     this.onEventLoadPension();
@@ -25,6 +26,7 @@ export class ViewImportFileComponent implements OnInit {
     this.noPensionService.getPensionAll(page).subscribe({
       next: (value) => {
         this.collectionSize = value.total_records;
+        this.pageSize = value.records.length;
         this.pension = value.records;
       },
     })
@@ -45,7 +47,8 @@ export class ViewImportFileComponent implements OnInit {
     this.noPensionService.postLoadArchives(formData).subscribe({
       next: (value) => {
         console.log(value);
-        this.noPensionService.showMessageSuccess("Se cargo correctamente el archivo", "Enorabuena!")
+        this.noPensionService.showMessageSuccess("Se cargo correctamente el archivo", "Enorabuena!");
+        this.onEventLoadPension();
       },
       error: (err) => {
         this.noPensionService.showMessageError("Ocurrio un error al cargar el documento contactate con el administrador", "Error!")
@@ -55,6 +58,10 @@ export class ViewImportFileComponent implements OnInit {
 
   onEventRefreshData() {
     this.onEventLoadPension(this.page);
+  }
+
+  onEventUpdateUser(userId: string) {
+    this.router.navigate(["pension/update", userId])
   }
 
 }
