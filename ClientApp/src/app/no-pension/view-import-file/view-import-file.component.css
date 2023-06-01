@@ -22,11 +22,9 @@
   border-radius: 5px;
 }
 
-
-.container__title > h1{
+.container__title > h1 {
   font-weight: 600;
   font-size: 1.5rem;
-
 }
 
 .container__body {
@@ -40,22 +38,20 @@
   background-color: #fff;
 }
 
-.table > thead{
+.table > thead {
   background-color: #dadbf3;
 }
 
-.table >td{
+.table > td {
   padding: 0.35rem;
 }
-
-
 
 .form {
   background-color: #fff;
   box-shadow: 0 10px 60px rgb(218, 229, 255);
   border: 1px solid rgb(159, 159, 160);
   border-radius: 20px;
-  padding: 0.5rem .7rem .7rem .7rem;
+  padding: 0.5rem 0.7rem 0.7rem 0.7rem;
   text-align: center;
   width: 100%;
 }
@@ -85,7 +81,7 @@
   border: 2px dashed rgb(171, 202, 255);
   color: #444;
   cursor: pointer;
-  transition: background .2s ease-in-out, border .2s ease-in-out;
+  transition: background 0.2s ease-in-out, border 0.2s ease-in-out;
 }
 
 .drop-container:hover {
@@ -102,7 +98,7 @@
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  transition: color .2s ease-in-out;
+  transition: color 0.2s ease-in-out;
 }
 
 #file-input {
@@ -122,7 +118,7 @@
   border-radius: 10px;
   color: #fff;
   cursor: pointer;
-  transition: background .2s ease-in-out;
+  transition: background 0.2s ease-in-out;
 }
 
 #file-input::file-selector-button:hover {

@@ -8,20 +8,21 @@
   <div class="container__title">
     <form class="form">
       <span class="form-title">Carga archivo de pensionados</span>
-      <p class="form-paragraph">
-          El archivo de ser de tipo .xlsx o .cvs 
-        </p>
-       <label for="file-input" class="drop-container">
-      <input accept=".xlsx, .cvs" (change)="onEventFIleSelected($event)" type="file" id="file-input">
-    </label>
+      <p class="form-paragraph">El archivo de ser de tipo .xlsx o .cvs</p>
+      <label for="file-input" class="drop-container">
+        <input
+          accept=".xlsx, .cvs"
+          (change)="onEventFIleSelected($event)"
+          type="file"
+          id="file-input"
+        />
+      </label>
     </form>
   </div>
 
   <div class="container__body contenedor-tramites-g col-xl-12">
     <div class="contenedor-tramites">
-      <table
-        class="table table-responsive-xl table-striped table-hover"
-      >
+      <table class="table table-responsive-xl table-striped table-hover">
         <thead class="table">
           <tr>
             <th scope="col">No</th>
@@ -37,7 +38,13 @@
             <td>{{ user.identificacion }}</td>
             <td>{{ user.nombrecompleto }}</td>
             <td>{{ user.estado }}</td>
-            <td><a class="btn btn-primary" (click)="onEventUpdateUser(user.identificacion)">Gestionar</a></td>
+            <td>
+              <a
+                class="btn btn-primary"
+                (click)="onEventUpdateUser(user.identificacion)"
+                >Gestionar</a
+              >
+            </td>
           </tr>
         </tbody>
       </table>
@@ -46,13 +53,12 @@
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination
         [(collectionSize)]="collectionSize"
-        [(page)]="page" 
+        [(page)]="page"
         [(pageSize)]="pageSize"
         [maxSize]="5"
         (pageChange)="onEventRefreshData()"
-      > 
-      </ngb-pagination> 
-     
+      >
+      </ngb-pagination>
     </div>
   </div>
 </section>
