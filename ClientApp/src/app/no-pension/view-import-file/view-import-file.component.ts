@@ -46,7 +46,6 @@ export class ViewImportFileComponent implements OnInit {
 
     this.noPensionService.postLoadArchives(formData).subscribe({
       next: (value) => {
-        console.log(value);
         this.noPensionService.showMessageSuccess("Se cargo correctamente el archivo", "Enorabuena!");
         this.onEventLoadPension();
       },
