@@ -331,7 +331,7 @@ namespace Aplicativo.net.Controllers
       }
 
       user.Nombrecompleto = payload.Nombrecompleto;
-      user.estado = user.estado;
+      user.estado = payload.estado;
 
       _context.Entry(user).State = EntityState.Modified;
       await _context.SaveChangesAsync();

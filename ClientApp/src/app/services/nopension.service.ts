@@ -41,8 +41,8 @@ export class NopensionService {
   }
 
   putUpdateUserNoPension(payload: UserNoPension): Observable<string> {
-    const url = `${environment.api_url + 'api/Nopension'}`;
-    return this.http.post<string>(url, payload);
+    const url = `${environment.api_url + 'api/Nopension'}/${payload.identificacion}`;
+    return this.http.put<string>(url, payload);
   }
 
   showMessageSuccess(message: string, title: string) {
