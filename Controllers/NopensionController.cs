@@ -32,7 +32,7 @@ namespace Aplicativo.net.Controllers
     private readonly IConfiguration _config;
 
     private readonly int records = 10;
-    
+
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
       _context = context;
@@ -43,14 +43,14 @@ namespace Aplicativo.net.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<nopension>> GetUserNoPension(string id)
     {
-        var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
-        
-        if (user == null)
-        {
-           return BadRequest(new { mensaje = "Usuario no encontrado" });
-        }
+      var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
 
-        return user;
+      if (user == null)
+      {
+        return BadRequest(new { mensaje = "Usuario no encontrado" });
+      }
+
+      return user;
     }
 
 
@@ -321,22 +321,23 @@ namespace Aplicativo.net.Controllers
     }
 
     [HttpPut("{id}")]
-     public async Task<IActionResult> PutUpdateUser(int id, UpdateUserNoPension user)
+    public async Task<IActionResult> PutUpdateUser(string id, UpdateUserNoPension payload)
     {
-         var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
-        
-        if (user == null)
-        {
-           return BadRequest(new { mensaje = "Usuario no encontrado" });
-        }
+      var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == id);
 
-        user.Estado = user.Estado.ToUpper();
-        user.TipoTramite = user.TipoTramite.ToUpper();
-        _context.Entry(itemStramite).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+      if (user == null)
+      {
+        return BadRequest(new { mensaje = "Usuario no encontrado" });
+      }
 
-        return NoContent();
-    }>
+      user.Nombrecompleto = payload.Nombrecompleto;
+      user.estado = user.estado;
+
+      _context.Entry(user).State = EntityState.Modified;
+      await _context.SaveChangesAsync();
+
+      return Ok(new { mensaje = "Usuario actualizado" });
+    }
 
 
   }
