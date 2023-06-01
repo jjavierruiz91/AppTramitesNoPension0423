@@ -4,4 +4,34 @@
   <div class="container__title">
     <h1>Gestion de usuario</h1>
   </div>
+
+  <div class="container__body">
+    <form (ngSubmit)="onEventUpdateUser()">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputIdentification">Identificacion</label>
+          <input type="text" class="form-control" id="inputIdentification" [(ngModel)]="user.identificacion" [ngModelOptions]="{standalone: true}" [value]="user.identificacion">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputNombreCompleto">Identificacion</label>
+          <input type="text" class="form-control" id="inputNombreCompleto" [(ngModel)]="user.nombrecompleto" [ngModelOptions]="{standalone: true}" placeholder="Password"[value]="user.nombrecompleto" >
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="stateUser">State</label>
+          <select id="stateUser" class="form-control" [(ngModel)]="user.estado" [ngModelOptions]="{standalone: true}">
+            <option value="jubilado">Jubilado </option>
+            <option value="Carrera administrativa">Carrera administrativa</option>
+            <option value="Libre Nombramiento">Libre Nombramiento</option>
+            <option value="No Definido">No Definido</option>
+            <option value="proceso">proceso</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Actualizar</button>
+      <button type="button" class="btn btn-warn"[routerLink]="['/pension']">Cancela</button>
+    </form>
+
+  </div>
 </section>

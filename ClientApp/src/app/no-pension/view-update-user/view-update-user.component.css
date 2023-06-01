@@ -1,12 +1,12 @@
 .container__nopension {
   display: flex;
   /* grid-template-rows: 4.5rem 1fr; */
-  height: 90vh;
+  height: 40vh;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 0.5rem;
   gap: 0.5rem;
-  margin-bottom: 80vh;
+  margin-bottom: 20vh
 }
 
 .container__title {
@@ -18,6 +18,13 @@
   border-radius: 5px;
 }
 
+.container__body {
+  width: 100%;
+  background: #fff;
+  padding: 0.5rem;
+  align-items: center;
+  border-radius: 5px;
+}
 
 .container__title > h1{
   font-weight: 600;
