@@ -18,7 +18,7 @@ import { ViewUpdateUserComponent } from './view-update-user/view-update-user.com
     NgbPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    MenuModule
+    MenuModule,
   ]
 })
 export class NoPensionModule { }
