@@ -12,7 +12,7 @@ export class ViewUpdateUserComponent implements OnInit {
   user: UserNoPension = { codsolicitante: 0, identificacion: "A", nombrecompleto: "", estado: "" };
   selectStatus: string = "";
 
-  constructor(private router: ActivatedRoute, private noPension: NopensionService) {
+  constructor(private routerActive: ActivatedRoute, private noPension: NopensionService, private router: Router) {
     this.onEventGetIdentificationByUrl();
   }
 
@@ -20,7 +20,7 @@ export class ViewUpdateUserComponent implements OnInit {
   }
 
   onEventGetIdentificationByUrl() {
-    this.router.params.subscribe({
+    this.routerActive.params.subscribe({
       next: (value) => {
         this.onEventGetUserByIdentification(value.id)
       },
@@ -39,9 +39,8 @@ export class ViewUpdateUserComponent implements OnInit {
     console.log(this.user);
     this.noPension.putUpdateUserNoPension(this.user).subscribe({
       next: (value) => {
-        console.log(value);
-
-        this.noPension.showMessageSuccess("Informacion actualizada", "Enorabuena!")
+        this.noPension.showMessageSuccess("Informacion actualizada", "Enorabuena!");
+        this.router.navigate(["/pension"])
       },
       error: (err) => {
         this.noPension.showMessageError("Se produjo un error al actualizar el usuario", "Error!")
