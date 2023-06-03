@@ -30,6 +30,33 @@ namespace Aplicativo.net.Utilities.FileHelper
   public class FileHelper
   {
 
+    public bool ValidateColumns(string[] columnNames,IFormFile file)
+{
+
+    Stream stream = file.OpenReadStream();
+
+    XSSFWorkbook workbook = new XSSFWorkbook(stream);
+    ISheet sheet = workbook.GetSheetAt(0);
+
+    IRow firstRow = sheet.GetRow(0);
+
+    for (int i = 0; i < columnNames.Length; i++)
+    {
+        ICell cell = firstRow.GetCell(i);
+        string columnName = cell.StringCellValue;
+
+        if (columnName != columnNames[i])
+        {
+            workbook.Close();
+            return false;
+        }
+    }
+
+    workbook.Close();
+    return true;
+     
+}
+
     public List<ImportFile> ReadFile(IFormFile file)
     {
       List<ImportFile> list = new List<ImportFile>();
