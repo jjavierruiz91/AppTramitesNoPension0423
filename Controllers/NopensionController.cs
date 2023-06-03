@@ -32,6 +32,7 @@ namespace Aplicativo.net.Controllers
     private readonly IConfiguration _config;
 
     private readonly int records = 10;
+    string[] columnNames = { "identificacion", "nombrecompleto", "estado" };
 
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
@@ -80,11 +81,19 @@ namespace Aplicativo.net.Controllers
       var ruta = _config.GetSection("routeImportFile").Value + DateTime.Now.Month + Guid.NewGuid().ToString("N") + ".xlsx";
       var staticPath = Path.Combine(path, ruta);
 
+      FileHelper fileHeader = new FileHelper();
+      var validateColumnExcel = fileHeader.ValidateColumns(columnNames, request.Archive);
+      if (!validateColumnExcel) return BadRequest(new
+      {
+        mensaje = "Error, las columnas no coinciden con las del excel ",
+        StatusCode = StatusCodes.Status502BadGateway,
+        column = columnNames
+      });
+
       using (var stream = new FileStream(staticPath, FileMode.Create))
       {
         request.Archive.CopyTo(stream);
       }
-      FileHelper fileHeader = new FileHelper();
 
       var dataExcel = fileHeader.ReadFile(request.Archive);
 
