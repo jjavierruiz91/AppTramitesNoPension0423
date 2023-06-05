@@ -33,6 +33,7 @@ namespace Aplicativo.net.Controllers
 
     private readonly int records = 10;
     string[] columnNames = { "identificacion", "nombrecompleto", "estado" };
+    string[] allowTypes = { ".csv", ".xlsx" };
 
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
@@ -87,6 +88,14 @@ namespace Aplicativo.net.Controllers
       {
         mensaje = "Error, las columnas no coinciden con las del excel ",
         StatusCode = StatusCodes.Status502BadGateway,
+        column = columnNames
+      });
+
+      var validateTypeFile = fileHeader.ValidateTypeFile(request.Archive, allowTypes);
+      if (!validateTypeFile) return BadRequest(new
+      {
+        mensaje = "Error, El tipo de archivo no esta permitido",
+        StatusCode = StatusCodes.Status405MethodNotAllowed,
         column = columnNames
       });
 
