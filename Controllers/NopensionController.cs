@@ -96,7 +96,6 @@ namespace Aplicativo.net.Controllers
       {
         mensaje = "Error, El tipo de archivo no esta permitido",
         StatusCode = StatusCodes.Status405MethodNotAllowed,
-        column = columnNames
       });
 
       using (var stream = new FileStream(staticPath, FileMode.Create))

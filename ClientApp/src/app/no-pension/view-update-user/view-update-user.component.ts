@@ -31,11 +31,12 @@ export class ViewUpdateUserComponent implements OnInit {
     this.noPension.getUserByIdentification(identification).subscribe({
       next: (value: UserNoPension) => {
         this.user = value;
-      }
-    })
+      },
+    });
   }
 
   onEventUpdateUser() {
+    console.log(this.user);
     this.noPension.putUpdateUserNoPension(this.user).subscribe({
       next: (value) => {
         this.noPension.showMessageSuccess("Informacion actualizada", "Enorabuena!");
