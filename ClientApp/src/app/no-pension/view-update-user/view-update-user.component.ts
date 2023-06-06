@@ -36,7 +36,6 @@ export class ViewUpdateUserComponent implements OnInit {
   }
 
   onEventUpdateUser() {
-    console.log(this.user);
     this.noPension.putUpdateUserNoPension(this.user).subscribe({
       next: (value) => {
         this.noPension.showMessageSuccess("Informacion actualizada", "Enorabuena!");
