@@ -113,11 +113,12 @@ namespace Aplicativo.net.Utilities.FileHelper
     public bool ValidateTypeFile(IFormFile file, string[] allowTypes)
     {
       var isValidate = false;
-      
+
       string extension = Path.GetExtension(file.FileName);
       foreach (string type in allowTypes)
       {
-        if (extension == type) {
+        if (extension == type)
+        {
           isValidate = true;
         };
       }
