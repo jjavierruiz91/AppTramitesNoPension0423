@@ -50,7 +50,12 @@ export class ViewImportFileComponent implements OnInit {
         this.onEventLoadPension();
       },
       error: (err) => {
-        this.noPensionService.showMessageError("Ocurrio un error al cargar el documento contactate con el administrador", "Error!")
+        let message: string = "Ocurrio un error al cargar el documento contactate con el administrador";
+        if (err.error.statusCode === 502 || err.error.statusCode === 405) {
+          message = err.error.message;
+        }
+
+        this.noPensionService.showMessageError(message, "Error!")
       },
     })
   }

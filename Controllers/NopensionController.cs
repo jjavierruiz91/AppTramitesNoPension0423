@@ -33,6 +33,7 @@ namespace Aplicativo.net.Controllers
 
     private readonly int records = 10;
     string[] columnNames = { "identificacion", "nombrecompleto", "estado" };
+    string[] allowTypes = { ".csv", ".xlsx" };
 
     public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
     {
@@ -48,7 +49,7 @@ namespace Aplicativo.net.Controllers
 
       if (user == null)
       {
-        return BadRequest(new { mensaje = "Usuario no encontrado" });
+        return BadRequest(new { message = "Usuario no encontrado" });
       }
 
       return user;
@@ -85,9 +86,16 @@ namespace Aplicativo.net.Controllers
       var validateColumnExcel = fileHeader.ValidateColumns(columnNames, request.Archive);
       if (!validateColumnExcel) return BadRequest(new
       {
-        mensaje = "Error, las columnas no coinciden con las del excel ",
+        message = "Error, las columnas no coinciden con las del excel: identificacion, nombrecompleto,estado ",
         StatusCode = StatusCodes.Status502BadGateway,
         column = columnNames
+      });
+
+      var validateTypeFile = fileHeader.ValidateTypeFile(request.Archive, allowTypes);
+      if (!validateTypeFile) return BadRequest(new
+      {
+        message = "Error, El tipo de archivo no esta permitido",
+        StatusCode = StatusCodes.Status405MethodNotAllowed,
       });
 
       using (var stream = new FileStream(staticPath, FileMode.Create))
@@ -121,9 +129,9 @@ namespace Aplicativo.net.Controllers
       }
       catch (Exception ex)
       {
-        return BadRequest(new { mensaje = "Error al guardar la informacion del archivo excel" });
+        return BadRequest(new { message = "Error al guardar la informacion del archivo excel" });
       }
-      return Ok(new { mensaje = "Se guardo correctamente los usuario" });
+      return Ok(new { message = "Se guardo correctamente los usuario" });
     }
 
 
@@ -336,7 +344,7 @@ namespace Aplicativo.net.Controllers
 
       if (user == null)
       {
-        return BadRequest(new { mensaje = "Usuario no encontrado" });
+        return BadRequest(new { message = "Usuario no encontrado" });
       }
 
       user.Nombrecompleto = payload.Nombrecompleto;
@@ -345,7 +353,7 @@ namespace Aplicativo.net.Controllers
       _context.Entry(user).State = EntityState.Modified;
       await _context.SaveChangesAsync();
 
-      return Ok(new { mensaje = "Usuario actualizado" });
+      return Ok(new { message = "Usuario actualizado" });
     }
 
 

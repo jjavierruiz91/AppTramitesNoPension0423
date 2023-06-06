@@ -30,32 +30,32 @@ namespace Aplicativo.net.Utilities.FileHelper
   public class FileHelper
   {
 
-    public bool ValidateColumns(string[] columnNames,IFormFile file)
-{
-
-    Stream stream = file.OpenReadStream();
-
-    XSSFWorkbook workbook = new XSSFWorkbook(stream);
-    ISheet sheet = workbook.GetSheetAt(0);
-
-    IRow firstRow = sheet.GetRow(0);
-
-    for (int i = 0; i < columnNames.Length; i++)
+    public bool ValidateColumns(string[] columnNames, IFormFile file)
     {
+
+      Stream stream = file.OpenReadStream();
+
+      XSSFWorkbook workbook = new XSSFWorkbook(stream);
+      ISheet sheet = workbook.GetSheetAt(0);
+
+      IRow firstRow = sheet.GetRow(0);
+
+      for (int i = 0; i < columnNames.Length; i++)
+      {
         ICell cell = firstRow.GetCell(i);
         string columnName = cell.StringCellValue;
 
         if (columnName != columnNames[i])
         {
-            workbook.Close();
-            return false;
+          workbook.Close();
+          return false;
         }
-    }
+      }
 
-    workbook.Close();
-    return true;
-     
-}
+      workbook.Close();
+      return true;
+
+    }
 
     public List<ImportFile> ReadFile(IFormFile file)
     {
@@ -108,6 +108,22 @@ namespace Aplicativo.net.Utilities.FileHelper
 
       System.IO.File.Delete(path);
       return true;
+    }
+
+    public bool ValidateTypeFile(IFormFile file, string[] allowTypes)
+    {
+      var isValidate = false;
+
+      string extension = Path.GetExtension(file.FileName);
+      foreach (string type in allowTypes)
+      {
+        if (extension == type)
+        {
+          isValidate = true;
+        };
+      }
+
+      return isValidate;
     }
   }
 }

@@ -31,8 +31,8 @@ export class ViewUpdateUserComponent implements OnInit {
     this.noPension.getUserByIdentification(identification).subscribe({
       next: (value: UserNoPension) => {
         this.user = value;
-      }
-    })
+      },
+    });
   }
 
   onEventUpdateUser() {
@@ -42,8 +42,8 @@ export class ViewUpdateUserComponent implements OnInit {
         this.router.navigate(["/pension"])
       },
       error: (err) => {
-        this.noPension.showMessageError("Se produjo un error al actualizar el usuario", "Error!")
-
+        let message: string = "Se produjo un error al actualizar el usuario"
+        this.noPension.showMessageError(message, "Error!")
       },
     })
   }
