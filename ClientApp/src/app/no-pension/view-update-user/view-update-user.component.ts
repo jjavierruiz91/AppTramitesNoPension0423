@@ -44,10 +44,6 @@ export class ViewUpdateUserComponent implements OnInit {
       },
       error: (err) => {
         let message: string = "Se produjo un error al actualizar el usuario"
-        if (err.statusCode === 502 || err.statusCode === 405) {
-          message = err.message;
-        }
-
         this.noPension.showMessageError(message, "Error!")
       },
     })

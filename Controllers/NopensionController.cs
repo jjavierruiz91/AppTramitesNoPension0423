@@ -86,7 +86,7 @@ namespace Aplicativo.net.Controllers
       var validateColumnExcel = fileHeader.ValidateColumns(columnNames, request.Archive);
       if (!validateColumnExcel) return BadRequest(new
       {
-        message = "Error, las columnas no coinciden con las del excel " + columnNames,
+        message = "Error, las columnas no coinciden con las del excel: identificacion, nombrecompleto,estado " ,
         StatusCode = StatusCodes.Status502BadGateway,
         column = columnNames
       });
