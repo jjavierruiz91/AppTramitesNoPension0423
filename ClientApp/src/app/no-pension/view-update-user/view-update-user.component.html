@@ -2,7 +2,7 @@
 
 <section class="container__nopension col-xs-12 col-md-12 col-lg-12 col-xl-12">
   <div class="container__title">
-    <h1>Gestion de usuario</h1>
+    <h1>Gestion de usuarios</h1>
   </div>
 
   <div class="container__body">
@@ -51,10 +51,17 @@
           </select>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Actualizar</button>
-      <button type="button" class="btn btn-warn" [routerLink]="['/pension']">
-        Cancela
-      </button>
+
+      <div class="form-row">
+        <button type="submit" class="btn btn-primary mr-1">Actualizar</button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          [routerLink]="['/pension']"
+        >
+          Cancelar
+        </button>
+      </div>
     </form>
   </div>
 </section>
