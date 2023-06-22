@@ -1,7 +1,5 @@
 .container__nopension {
   display: flex;
-  /* grid-template-rows: 4.5rem 1fr; */
-  height: 40vh;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 0.5rem;
