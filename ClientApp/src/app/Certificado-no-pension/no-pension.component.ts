@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
@@ -15,12 +15,17 @@ import { saveAs } from 'file-saver'
 export class NoPensionComponent implements OnInit {
 
   registerForm: FormGroup;
+  reCaptcha: FormControl;
+  generateCaptcha: {
+    firstValue: number
+    secondValue: number
+  } = { firstValue: 0, secondValue: 0 }
+
   isJubilado: boolean = false;
   buttonDisable: boolean = false;
   submitted
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private NopensionService: NopensionService,
     private toastr: ToastrService,
     private location: Location
@@ -29,9 +34,12 @@ export class NoPensionComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       id: [null, [Validators.required]],
-    },
+    });
 
-    );
+    this.reCaptcha = new FormControl(0);
+    this.generateCaptcha.firstValue = this.NopensionService.generateRandomNumber(50);
+    this.generateCaptcha.secondValue = this.NopensionService.generateRandomNumber(50);
+    console.log(this.generateCaptcha);
 
   }
 

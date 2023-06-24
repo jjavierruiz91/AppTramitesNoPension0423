@@ -53,5 +53,14 @@ export class NopensionService {
   showMessageError(message: string, title: string) {
     this.toastr.error(message, title);
   }
+
+  generateRandomNumber(length: number): number {
+    const numbers = Array.from({ length }, (_, index) => index + 1);
+
+    const indexRandom = Math.floor(Math.random() * numbers.length);
+    const number = numbers.splice(indexRandom, 1)[0];
+
+    return number;
+  }
 }
 

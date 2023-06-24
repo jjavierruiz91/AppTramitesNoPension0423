@@ -123,6 +123,20 @@
             </div>
           </div>
         </div>
+
+        <div class="input-group">
+          <label for="complete_operation"
+            >Complete la operacion: {{ generateCaptcha.firstValue }} +
+            {{ generateCaptcha.secondValue }} =
+          </label>
+          <input
+            class="form-control"
+            id="complete_operation"
+            type="number"
+            [formControl]="reCaptcha"
+          />
+        </div>
+
         <div class="container__status mb-1 p-1" *ngIf="isJubilado">
           <p>
             <span class="emphasized">
