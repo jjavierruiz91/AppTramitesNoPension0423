@@ -7,10 +7,11 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuModule } from '../menu/menu.module';
 import { ViewUpdateUserComponent } from './view-update-user/view-update-user.component';
+import { ViewUploadFileComponent } from './view-upload-file/view-upload-file.component';
 
 
 @NgModule({
-  declarations: [ViewImportFileComponent, ViewUpdateUserComponent],
+  declarations: [ViewImportFileComponent, ViewUpdateUserComponent, ViewUploadFileComponent],
   imports: [
     CommonModule,
     NoPensionRoutingModule,
