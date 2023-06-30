@@ -11,7 +11,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class MenuFuncionarioComponent implements OnInit {
 
-  constructor(private router: Router, private servicios: AuthService,private usuarioService: UsuarioService) { }
+  constructor(private router: Router, private servicios: AuthService, private usuarioService: UsuarioService) { }
 
   nom: string;
   apelli: string;
@@ -22,7 +22,7 @@ export class MenuFuncionarioComponent implements OnInit {
 
   ngOnInit() {
     this.getAll();
-    this.espacio=" ";
+    this.espacio = " ";
     this.usuarioService.get(this.servicios.getCodigoUserLocalStore()).subscribe(data => this.usuario = data);
 
   }
@@ -39,17 +39,21 @@ export class MenuFuncionarioComponent implements OnInit {
   }
 
   getAll() {
-    this.nom=this.servicios.getNombreLocalStore();
-    this.apelli=this.servicios.getApellidoLocalStore();
-    this.rol=this.servicios.getRolLocalStore();
-    this.correo=this.servicios.getCorreoLocalStore();
+    this.nom = this.servicios.getNombreLocalStore();
+    this.apelli = this.servicios.getApellidoLocalStore();
+    this.rol = this.servicios.getRolLocalStore();
+    this.correo = this.servicios.getCorreoLocalStore();
   }
 
   CambiarCLave() {
-    this.router.navigate(['CambiarClave/' + this.servicios.getTokenLocalStore() + '/'+this.usuario.correo]);
+    this.router.navigate(['CambiarClave/' + this.servicios.getTokenLocalStore() + '/' + this.usuario.correo]);
   }
 
   DatosPersonalesFun() {
     this.router.navigate(['DatosPersonalesFun']);
+  }
+
+  routerTo(path) {
+    this.router.navigate([path]);
   }
 }

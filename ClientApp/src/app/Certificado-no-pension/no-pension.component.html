@@ -123,17 +123,23 @@
             </div>
           </div>
         </div>
-        <div class="input-group">
-          <label for="complete_operation"
-            >Complete la operacion: {{ generateCaptcha.firstValue }} +
-            {{ generateCaptcha.secondValue }} =
-          </label>
-          <input
-            class="form-control"
-            id="complete_operation"
-            type="number"
-            [formControl]="reCaptcha"
-          />
+
+        <div class="container__operation">
+          <div class="input-group mb-1">
+            <label for="complete_operation"
+              >Completa la operacion: {{ generateCaptcha.firstValue }} +
+              {{ generateCaptcha.secondValue }}
+            </label>
+          </div>
+
+          <div class="input-group mb-1">
+            <input
+              class="form-control"
+              id="complete_operation"
+              type="number"
+              [formControl]="reCaptcha"
+            />
+          </div>
         </div>
 
         <div class="container__status mb-1 p-1" *ngIf="isJubilado">

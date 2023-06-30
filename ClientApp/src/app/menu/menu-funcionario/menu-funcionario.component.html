@@ -27,7 +27,7 @@
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="#Logo">
+      <a class="navbar-brand mt-2 mt-lg-0" routerLink="pension">
         <img
           src="assets/Imagenes/logo_depto_big.png"
           height="45"
@@ -38,11 +38,13 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="InicioFuncionarioDeporte">Inicio</a>
+          <a class="nav-link" (click)="routerTo('/pension')">Inicio</a>
         </li>
-        <!-- <li class="nav-item">
-                        <a class="nav-link" href="Tramites">Trámites</a>
-                    </li> -->
+        <li class="nav-item">
+          <a class="nav-link" (click)="routerTo('/pension/upload')"
+            >Cargar Usuarios</a
+          >
+        </li>
       </ul>
       <!-- Left links -->
     </div>
