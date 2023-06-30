@@ -16,6 +16,7 @@ export class ViewUploadFileComponent implements OnInit {
 
   onEventFIleSelected(e: any) {
     this.files.push(e.target.files[0]);
+    this.onEventLoadFile()
   }
 
   onEventLoadFile() {
