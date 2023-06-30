@@ -21,6 +21,12 @@ export class NoPensionComponent implements OnInit {
     secondValue: number
   } = { firstValue: 0, secondValue: 0 }
 
+  reCaptcha: FormControl;
+  generateCaptcha: {
+    firstValue: number
+    secondValue: number
+  } = { firstValue: 0, secondValue: 0 }
+
   isJubilado: boolean = false;
   buttonDisable: boolean = false;
   submitted
