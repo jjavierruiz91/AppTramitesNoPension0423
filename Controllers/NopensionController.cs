@@ -56,6 +56,22 @@ namespace Aplicativo.net.Controllers
       return user;
     }
 
+    [HttpGet("validate/{id}/token")]
+    public async Task<ActionResult> GetValidateQr(string token)
+    {
+      var user = await _context.Nopension.FirstOrDefaultAsync(e => e.token == token);
+
+      if (user == null)
+      {
+        return BadRequest(new { message = "Usuario no encontrado" });
+      }
+
+      bool dateValida = NopensionService.ValidateDate(user.fechaVencimiento, 30);
+      var newObjet = new { status = dateValida, token = dateValida ? user.token : "" };
+
+      return Ok(newObjet);
+    }
+
 
     [HttpGet]
     public async Task<IActionResult> GetTramites([FromQuery] int? page)
@@ -64,7 +80,7 @@ namespace Aplicativo.net.Controllers
       int totalRecords = await _context.Nopension.CountAsync();
       int total_pages = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(totalRecords / records)));
       var pensiones = await _context.Nopension.Skip((_page - 1) * records).Take(records).ToListAsync();
-      
+
       return Ok(
         new
         {
@@ -106,9 +122,9 @@ namespace Aplicativo.net.Controllers
 
       var dataExcel = fileHeader.ReadFile(request.Archive);
       fileHeader.deleteFile(staticPath);
-      NopensionService service = new NopensionService(dataExcel, _context);
+      NopensionService service = new NopensionService(_context);
 
-      await Task.Run(() => service.loadUserUsingTask());
+      await Task.Run(() => service.loadUserUsingTask(dataExcel));
 
 
       return Ok(new { message = "Se guardo correctamente los usuario" });
@@ -310,6 +326,13 @@ namespace Aplicativo.net.Controllers
 
       //System.IO.FileStream fileStream =  System.IO.File.OpenRead(filePath); 
       byte[] fileContent = System.IO.File.ReadAllBytes(filePath);
+
+      NopensionService service = new NopensionService(_context);
+      clienteItem.updatedAt = DateTime.Now;
+      clienteItem.fechaVencimiento = DateTime.Now;
+      clienteItem.totalDescargas = clienteItem.totalDescargas + 1;
+      await Task.Run(() => service.updateUser(clienteItem));
+
       return new FileContentResult(fileContent, "application/pdf");
       //var fileUpload = File(fileStream, "application/octet-stream", "{{filename.ext}}");
       //System.IO.File.Delete(filePath);
