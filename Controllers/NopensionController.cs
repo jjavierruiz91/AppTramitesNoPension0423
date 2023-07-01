@@ -56,7 +56,7 @@ namespace Aplicativo.net.Controllers
       return user;
     }
 
-    [HttpGet("validate/{id}/token")]
+    [HttpGet("validate/{token}/token")]
     public async Task<ActionResult> GetValidateQr(string token)
     {
       var user = await _context.Nopension.FirstOrDefaultAsync(e => e.token == token);
@@ -68,7 +68,7 @@ namespace Aplicativo.net.Controllers
 
       bool dateValida = NopensionService.ValidateDate(user.fechaVencimiento, 30);
       var newObjet = new { status = dateValida, token = dateValida ? user.token : "" };
-
+      
       return Ok(newObjet);
     }
 
@@ -330,6 +330,7 @@ namespace Aplicativo.net.Controllers
       NopensionService service = new NopensionService(_context);
       clienteItem.updatedAt = DateTime.Now;
       clienteItem.fechaVencimiento = DateTime.Now;
+      clienteItem.estadoCertificado = "valido"
       clienteItem.totalDescargas = clienteItem.totalDescargas + 1;
       await Task.Run(() => service.updateUser(clienteItem));
 
