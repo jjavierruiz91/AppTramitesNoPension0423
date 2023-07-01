@@ -104,39 +104,11 @@ namespace Aplicativo.net.Controllers
       }
 
       var dataExcel = fileHeader.ReadFile(request.Archive);
+      fileHeader.deleteFile(staticPath);
 
-      try
-      {
-        foreach (var item in dataExcel)
-        {
-          var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
+      await Task.Run(() => loadUserUsingTask(dataExcel));
 
-          if (user != null) continue;
 
-          var createUser = new nopension
-          {
-            Identificacion = item.Identificacion,
-            Nombrecompleto = item.Nombrecompleto,
-            estado = item.estado,
-            estadoCertificado = "valido",
-            fechaVencimiento = DateTime.Now,
-            createdAt = DateTime.Now,
-            updatedAt = DateTime.Now,
-            totalDescargas = 0,
-            token = Guid.NewGuid().ToString(),
-          };
-
-          _context.Nopension.Add(createUser);
-        }
-
-        await _context.SaveChangesAsync();
-
-        fileHeader.deleteFile(staticPath);
-      }
-      catch (Exception ex)
-      {
-        return BadRequest(new { message = "Error al guardar la informacion del archivo excel" });
-      }
       return Ok(new { message = "Se guardo correctamente los usuario" });
     }
 
@@ -363,5 +335,40 @@ namespace Aplicativo.net.Controllers
     }
 
 
+    public async Task loadUserUsingTask(List<ImportFile> dataExcel)
+    {
+      try
+      {
+        foreach (var item in dataExcel)
+        {
+          var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
+
+          if (user != null) continue;
+
+          var createUser = new nopension
+          {
+            Identificacion = item.Identificacion,
+            Nombrecompleto = item.Nombrecompleto,
+            estado = item.estado,
+            estadoCertificado = "valido",
+            fechaVencimiento = DateTime.Now,
+            createdAt = DateTime.Now,
+            updatedAt = DateTime.Now,
+            totalDescargas = 0,
+            token = Guid.NewGuid().ToString(),
+          };
+
+          _context.Nopension.Add(createUser);
+        }
+
+        await _context.SaveChangesAsync();
+      }
+      catch (Exception ex)
+      {
+        BadRequest(new { message = "Error al guardar la informacion del archivo excel" });
+      }
+
+      Ok(new { message = "Usuario actualizado" });
+    }
   }
 }
