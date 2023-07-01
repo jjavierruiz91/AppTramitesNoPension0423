@@ -1,22 +1,31 @@
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Aplicativo.net.DTOs;
+using Aplicativo.net.Models;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-
+using Microsoft.AspNetCore.Http;
 
 namespace Aplicativo.net.Services
 {
   public class NopensionService
   {
-     public async Task loadUserUsingTask(List<ImportFile> dataExcel, AplicativoContext _context)
+    private readonly AplicativoContext _context;
+    private List<ImportFile> _dataExcel;
+
+    public NopensionService(List<ImportFile> dataExcel, AplicativoContext context)
+    {
+      _dataExcel = dataExcel;
+      _context = context;
+    }
+
+    public async Task loadUserUsingTask()
     {
       try
       {
-        
-        foreach (var item in dataExcel)
+
+        foreach (var item in _dataExcel)
         {
           var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
 
@@ -42,10 +51,10 @@ namespace Aplicativo.net.Services
       }
       catch (Exception ex)
       {
-        BadRequest(new { message = "Error al guardar la informacion del archivo excel" });
+        Console.WriteLine(new { message = "Error al guardar la informacion del archivo excel" });
       }
 
-      Ok(new { message = "Usuario actualizado" });
+      Console.WriteLine(new { message = "Usuario actualizado" });
     }
   }
 }

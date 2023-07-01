@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Aplicativo.net.Models;
-using Microsoft.Extensions.Logging;
+
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
@@ -106,8 +106,9 @@ namespace Aplicativo.net.Controllers
 
       var dataExcel = fileHeader.ReadFile(request.Archive);
       fileHeader.deleteFile(staticPath);
+      NopensionService service = new NopensionService(dataExcel, _context);
 
-      await Task.Run(() => NopensionService.loadUserUsingTask(dataExcel,_context));
+      await Task.Run(() => service.loadUserUsingTask());
 
 
       return Ok(new { message = "Se guardo correctamente los usuario" });
@@ -334,5 +335,5 @@ namespace Aplicativo.net.Controllers
 
       return Ok(new { message = "Usuario actualizado" });
     }
-
+  }
 }
