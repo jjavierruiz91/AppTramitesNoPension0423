@@ -91,6 +91,15 @@ namespace Aplicativo.net.Controllers
         });
     }
 
+    [HttpGet("test")]
+    public async void GetTramitesv2()
+    {
+
+      NopensionService a = new NopensionService(_context);
+      a.GenerarCodigoQR("www.google.com", "resources/qr");
+
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> ImportFile([FromForm] ImportFIleDto request)

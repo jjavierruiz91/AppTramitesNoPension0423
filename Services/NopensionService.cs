@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Aplicativo.net.Models;
 using System.Threading.Tasks;
-using System.Threading;
 using System;
-using Microsoft.AspNetCore.Http;
+using QRCoder;
+using System.Drawing;
 
 namespace Aplicativo.net.Services
 {
@@ -72,6 +72,17 @@ namespace Aplicativo.net.Services
       }
 
       return false;
+    }
+
+
+    public void GenerarCodigoQR(string url, string rutaArchivo)
+    {
+      QRCodeGenerator qrGenerator = new QRCodeGenerator();
+      QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+      QRCode qrCode = new QRCode(qrCodeData);
+      Bitmap qrCodeImage = qrCode.GetGraphic(20);
+
+      qrCodeImage.Save(rutaArchivo, System.Drawing.Imaging.ImageFormat.Png);
     }
 
 
