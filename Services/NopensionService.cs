@@ -23,7 +23,7 @@ namespace Aplicativo.net.Services
       _context = context;
     }
 
-    public async Task loadUserUsingTask(List<ImportFile> dataExcel)
+    public async Task loadUserUsingTask(List<ImportFile> dataExcel, string _qrPath)
     {
       try
       {
@@ -33,7 +33,7 @@ namespace Aplicativo.net.Services
           var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
 
           if (user != null) continue;
-
+          string qrPath = _qrPath + item.Identificacion + Guid.NewGuid().ToString();
           var createUser = new nopension
           {
             Identificacion = item.Identificacion,
@@ -45,8 +45,10 @@ namespace Aplicativo.net.Services
             updatedAt = DateTime.Now,
             totalDescargas = 0,
             token = "pension-" + Guid.NewGuid().ToString(),
+            qrPath = qrPath
           };
-
+          string url = "https://localhost:5001?token=" + createUser.token;
+          this.GenerarCodigoQR(url, qrPath);
           _context.Nopension.Add(createUser);
         }
 
@@ -82,49 +84,46 @@ namespace Aplicativo.net.Services
 
     public void GenerarCodigoQR(string texto, string rutaArchivo)
     {
-       Byte[] byteArray;
-    var width = 250; // width of the Qr Code
-    var height = 250; // height of the Qr Code
-    var margin = 0;
-    var qrCodeWriter = new ZXing.BarcodeWriterPixelData
-    {
+      var width = 250; // width of the Qr Code
+      var height = 250; // height of the Qr Code
+      var margin = 0;
+      var qrCodeWriter = new ZXing.BarcodeWriterPixelData
+      {
         Format = ZXing.BarcodeFormat.QR_CODE,
         Options = new QrCodeEncodingOptions
         {
-            Height = height,
-            Width = width,
-            Margin = margin
+          Height = height,
+          Width = width,
+          Margin = margin
         }
-    };
-    var pixelData = qrCodeWriter.Write(texto);
+      };
+      var pixelData = qrCodeWriter.Write(texto);
 
-   
-    using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
-    {
+
+      using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
+      {
         using (var ms = new MemoryStream())
         {
-            var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-            try
-            {
-                // we assume that the row stride of the bitmap is aligned to 4 byte multiplied by the width of the image
-                System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
-            }
-            finally
-            {
-                bitmap.UnlockBits(bitmapData);
-            }
+          var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+          try
+          {
+            // we assume that the row stride of the bitmap is aligned to 4 byte multiplied by the width of the image
+            System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+          }
+          finally
+          {
+            bitmap.UnlockBits(bitmapData);
+          }
 
-            // save to folder
-            string fileGuid = Guid.NewGuid().ToString().Substring(0, 4);
-            bitmap.Save(rutaArchivo+ ".png", System.Drawing.Imaging.ImageFormat.Png);
+          // save to folder
+          string fileGuid = Guid.NewGuid().ToString().Substring(0, 4);
+          bitmap.Save(rutaArchivo + ".png", System.Drawing.Imaging.ImageFormat.Png);
 
-            // save to stream as PNG
-            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            byteArray = ms.ToArray();
+          // save to stream as PNG
+          bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
         }
 
+      }
     }
-    Console.WriteLine(byteArray);
-    }
-    }
+  }
 }

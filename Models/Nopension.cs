@@ -26,6 +26,8 @@ namespace Aplicativo.net.Models
     [JsonProperty("updatedAt")] public DateTime updatedAt { get; set; }
     [JsonProperty("totaDescargas")] public int totalDescargas { get; set; }
     [JsonProperty("token")] public string token { get; set; }
+
+    [JsonProperty("qrPath")] public string qrPath { get; set; }
   }
 
   public class ResponseNoPension

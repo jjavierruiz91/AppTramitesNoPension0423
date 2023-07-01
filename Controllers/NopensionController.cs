@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+
 using System.Linq;
 using System.Threading.Tasks;
 using System;
@@ -9,7 +9,7 @@ using Aplicativo.net.Models;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
-using iTextSharp;
+
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
@@ -17,8 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Aplicativo.net.Utilities.FileHelper;
 using Aplicativo.net.DTOs;
 
-using System.Threading;
-using Microsoft.Extensions.Hosting;
+
 using Aplicativo.net.Services;
 
 
@@ -133,7 +132,7 @@ namespace Aplicativo.net.Controllers
       fileHeader.deleteFile(staticPath);
       NopensionService service = new NopensionService(_context);
 
-      await Task.Run(() => service.loadUserUsingTask(dataExcel));
+      await Task.Run(() => service.loadUserUsingTask(dataExcel, _config.GetSection("routeQrPaht").Value));
 
 
       return Ok(new { message = "Se guardo correctamente los usuario" });
