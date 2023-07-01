@@ -96,7 +96,7 @@ namespace Aplicativo.net.Controllers
     {
 
       NopensionService a = new NopensionService(_context);
-      a.GenerarCodigoQR("www.google.com", "resources/qr");
+      a.GenerarCodigoQR("www.google.com", "resources/qr/");
 
     }
 

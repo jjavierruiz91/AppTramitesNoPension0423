@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using Aplicativo.net.Models;
 using System.Threading.Tasks;
 using System;
+
 using ZXing;
 using ZXing.Common;
+using ZXing.QrCode;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Drawing;
@@ -80,24 +82,49 @@ namespace Aplicativo.net.Services
 
     public void GenerarCodigoQR(string texto, string rutaArchivo)
     {
-      BarcodeWriter<Bitmap> barcodeWriter = new BarcodeWriter<Bitmap>
-      {
-        Format = BarcodeFormat.QR_CODE,
-        Options = new EncodingOptions
+       Byte[] byteArray;
+    var width = 250; // width of the Qr Code
+    var height = 250; // height of the Qr Code
+    var margin = 0;
+    var qrCodeWriter = new ZXing.BarcodeWriterPixelData
+    {
+        Format = ZXing.BarcodeFormat.QR_CODE,
+        Options = new QrCodeEncodingOptions
         {
-          Height = 300,
-          Width = 300
+            Height = height,
+            Width = width,
+            Margin = margin
         }
-      };
+    };
+    var pixelData = qrCodeWriter.Write(texto);
 
-      var barcodeBitmap = barcodeWriter.Write(texto);
+   
+    using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
+    {
+        using (var ms = new MemoryStream())
+        {
+            var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+            try
+            {
+                // we assume that the row stride of the bitmap is aligned to 4 byte multiplied by the width of the image
+                System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
 
-      using (var stream = new FileStream(rutaArchivo, FileMode.Create))
-      {
-        barcodeBitmap.Save(stream, ImageFormat.Png);
-      }
+            // save to folder
+            string fileGuid = Guid.NewGuid().ToString().Substring(0, 4);
+            bitmap.Save(rutaArchivo+ ".png", System.Drawing.Imaging.ImageFormat.Png);
+
+            // save to stream as PNG
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            byteArray = ms.ToArray();
+        }
+
     }
-
-
-  }
+    Console.WriteLine(byteArray);
+    }
+    }
 }

@@ -47,6 +47,10 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+   <ItemGroup>
+     <RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
+ </ItemGroup>
+
   <ItemGroup>
     <Content Include="resources\**\*.*" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
   </ItemGroup>
