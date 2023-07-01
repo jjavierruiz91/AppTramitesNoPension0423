@@ -117,7 +117,13 @@ namespace Aplicativo.net.Controllers
           {
             Identificacion = item.Identificacion,
             Nombrecompleto = item.Nombrecompleto,
-            estado = item.estado
+            estado = item.estado,
+            estadoCertificado = "valido",
+            fechaVencimiento = DateTime.Now,
+            createdAt = DateTime.Now,
+            updatedAt = DateTime.Now,
+            totalDescargas = 0,
+            token = Guid.NewGuid().ToString(),
           };
 
           _context.Nopension.Add(createUser);
