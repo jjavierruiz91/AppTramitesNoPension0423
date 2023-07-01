@@ -63,8 +63,8 @@ namespace Aplicativo.net.Controllers
       int _page = page ?? 1;
       int totalRecords = await _context.Nopension.CountAsync();
       int total_pages = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(totalRecords / records)));
-      var pensiones = await _context.Nopension.Skip((_page * 1) * records).Take(records).ToListAsync();
-
+      var pensiones = await _context.Nopension.Skip((_page - 1) * records).Take(records).ToListAsync();
+       Console.WriteLine( pensiones.Count());
       return Ok(
         new
         {
