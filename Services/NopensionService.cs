@@ -12,20 +12,18 @@ namespace Aplicativo.net.Services
   public class NopensionService
   {
     private readonly AplicativoContext _context;
-    private List<ImportFile> _dataExcel;
 
-    public NopensionService(List<ImportFile> dataExcel, AplicativoContext context)
+    public NopensionService(AplicativoContext context)
     {
-      _dataExcel = dataExcel;
       _context = context;
     }
 
-    public async Task loadUserUsingTask()
+    public async Task loadUserUsingTask(List<ImportFile> dataExcel)
     {
       try
       {
 
-        foreach (var item in _dataExcel)
+        foreach (var item in dataExcel)
         {
           var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
 
@@ -41,7 +39,7 @@ namespace Aplicativo.net.Services
             createdAt = DateTime.Now,
             updatedAt = DateTime.Now,
             totalDescargas = 0,
-            token = Guid.NewGuid().ToString(),
+            token = "pension-" + Guid.NewGuid().ToString(),
           };
 
           _context.Nopension.Add(createUser);
@@ -56,5 +54,26 @@ namespace Aplicativo.net.Services
 
       Console.WriteLine(new { message = "Usuario actualizado" });
     }
+
+    public async Task updateUser(nopension user)
+    {
+      _context.Entry(user).State = EntityState.Modified;
+      await _context.SaveChangesAsync();
+    }
+
+    public static bool ValidateDate(DateTime fechaIngresada, int diasValidos)
+    {
+      DateTime fechaActual = DateTime.Now;
+      DateTime fechaLimite = fechaActual.AddDays(diasValidos);
+
+      if (fechaIngresada <= fechaLimite)
+      {
+        return true;
+      }
+
+      return false;
+    }
+
+
   }
 }
