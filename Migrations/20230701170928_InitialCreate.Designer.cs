@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aplicativo.net.Migrations
 {
     [DbContext(typeof(AplicativoContext))]
-    [Migration("20230701162935_updateMOdelNoPension")]
-    partial class updateMOdelNoPension
+    [Migration("20230701170928_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
