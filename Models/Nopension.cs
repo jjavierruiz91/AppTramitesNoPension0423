@@ -12,13 +12,19 @@ namespace Aplicativo.net.Models
     {
 
       
-  [Key] [JsonProperty("codsolicitante")] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Codsolicitante { get; set; }
+        [Key] [JsonProperty("codsolicitante")] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Codsolicitante { get; set; }
       //   [Key] [JsonProperty("identificacion")] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Identificacion { get; set; }
         [JsonProperty("identificacion")] public string Identificacion { get; set; }
         [JsonProperty("nombrecompleto")] public string Nombrecompleto { get; set; }
         [JsonProperty("estado")] public string estado { get; set; }
- 
-
+        
+        [JsonProperty("estadoCertificado")] public string estadoCertificado { get; set; }
+         [JsonProperty("fechaVencimiento")] public DateTime fechaVencimiento { get; set; }
+        
+        [JsonProperty("createdAt")] public DateTime createdAt { get; set; }
+        [JsonProperty("updatedAt")] public DateTime updatedAt { get; set; }
+        [JsonProperty("totaDescargas")] public int totalDescargas { get; set; }
+        [JsonProperty("token")] public string token { get; set; }
  }
 
  public class ResponseNoPension
