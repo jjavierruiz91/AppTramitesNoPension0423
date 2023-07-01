@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using Aplicativo.net.Models;
 using System.Threading.Tasks;
 using System;
-using QRCoder;
+using ZXing;
+using ZXing.Common;
+using System.IO;
+using System.Drawing.Imaging;
 using System.Drawing;
 
 namespace Aplicativo.net.Services
@@ -75,14 +78,24 @@ namespace Aplicativo.net.Services
     }
 
 
-    public void GenerarCodigoQR(string url, string rutaArchivo)
+    public void GenerarCodigoQR(string texto, string rutaArchivo)
     {
-      QRCodeGenerator qrGenerator = new QRCodeGenerator();
-      QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
-      QRCode qrCode = new QRCode(qrCodeData);
-      Bitmap qrCodeImage = qrCode.GetGraphic(20);
+      BarcodeWriter<Bitmap> barcodeWriter = new BarcodeWriter<Bitmap>
+      {
+        Format = BarcodeFormat.QR_CODE,
+        Options = new EncodingOptions
+        {
+          Height = 300,
+          Width = 300
+        }
+      };
 
-      qrCodeImage.Save(rutaArchivo, System.Drawing.Imaging.ImageFormat.Png);
+      var barcodeBitmap = barcodeWriter.Write(texto);
+
+      using (var stream = new FileStream(rutaArchivo, FileMode.Create))
+      {
+        barcodeBitmap.Save(stream, ImageFormat.Png);
+      }
     }
 
 
