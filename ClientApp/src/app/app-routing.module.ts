@@ -352,6 +352,10 @@ const routes: Routes = [
     canActivate: [AuthGenericGuard],
     loadChildren: () => import('../app/no-pension/no-pension.module').then((m) => m.NoPensionModule),
   },
+  {
+    path: 'public',
+    loadChildren: () => import('../app/public/public.module').then((m) => m.PublicModule),
+  },
 
   //OTROS
   { path: 'Inscripcion', component: InscripcionDignatariosComponent },
