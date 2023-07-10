@@ -81,7 +81,6 @@ namespace Aplicativo.net.Services
       return false;
     }
 
-
     public void GenerarCodigoQR(string texto, string rutaArchivo)
     {
       var width = 250; // width of the Qr Code
@@ -125,5 +124,6 @@ namespace Aplicativo.net.Services
 
       }
     }
+
   }
 }
