@@ -47,7 +47,7 @@ namespace Aplicativo.net.Services
             token = "pension-" + Guid.NewGuid().ToString(),
             qrPath = qrPath
           };
-          string url = "http://localhost:5001/pension?token=" + createUser.token;
+          string url = "http://localhost:5001/public/validate?token=" + createUser.token;
           this.GenerarCodigoQR(url, qrPath);
           _context.Nopension.Add(createUser);
         }
