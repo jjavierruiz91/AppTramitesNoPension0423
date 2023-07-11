@@ -62,11 +62,21 @@ namespace Aplicativo.net.Controllers
 
       if (user == null)
       {
-        return BadRequest(new { message = "Usuario no encontrado" });
+        return BadRequest(new { message = "Token no fue encontrado!" });
       }
 
       bool dateValida = NopensionService.ValidateDate(user.fechaVencimiento, 30);
-      var newObjet = new { status = dateValida, token = dateValida ? user.token : "" };
+      
+      var newObjet = new { status = dateValida };
+      if(dateValida) {
+        return Ok(new {
+            status = dateValida,
+            token = dateValida ? user.token : "", 
+            Nombrecompleto = user.Nombrecompleto, 
+            Identificacion = user.Identificacion,
+            fechaVencimiento = user.fechaVencimiento
+         });
+      }
 
       return Ok(newObjet);
     }
