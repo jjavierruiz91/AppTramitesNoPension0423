@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Nopension } from '../models/nopension';
+import { Nopension, PublicNoPension } from '../models/nopension';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { UserNoPension } from '../models/usuario';
@@ -27,6 +27,12 @@ export class NopensionService {
     const url = `${environment.api_url + 'api/Nopension'}/${identification}`;
     return this.http.get<UserNoPension>(url)
   }
+
+  getNoPensionByToken(token: string): Observable<PublicNoPension> {
+    const url = `${environment.api_url + 'api/Nopension'}/validate/${token}/token`;
+    return this.http.get<PublicNoPension>(url)
+  }
+
 
   getPensionAll(page: number = 1): Observable<any> {
     const params = new HttpParams().set('page', page.toString());
