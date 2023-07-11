@@ -1,0 +1,11 @@
+<section class="public__container">
+  <div class="public__container-card">
+    <section class="public__container-title">
+      <h2>Verificacion de certificado de no pension</h2>
+    </section>
+    <section class="public__container-body" *ngIf="noPension">
+      <p>El certificado con numero de cedula {{noPension.identificacion}} se encuentra {{noPension.status ? "Vigente" : "no Vigente" }} 
+        hasta el dia {{noPension.fechaVencimiento | date}}</p>
+    </section>
+  </div>
+</section>

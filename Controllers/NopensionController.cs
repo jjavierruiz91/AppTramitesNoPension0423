@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+
 using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Aplicativo.net.Models;
-using Microsoft.Extensions.Logging;
+
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
-using iTextSharp;
+
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
@@ -17,8 +17,8 @@ using Microsoft.AspNetCore.Hosting;
 using Aplicativo.net.Utilities.FileHelper;
 using Aplicativo.net.DTOs;
 
-using System.Threading;
-using Microsoft.Extensions.Hosting;
+
+using Aplicativo.net.Services;
 
 
 namespace Aplicativo.net.Controllers
@@ -55,6 +55,32 @@ namespace Aplicativo.net.Controllers
       return user;
     }
 
+    [HttpGet("validate/{token}/token")]
+    public async Task<ActionResult> GetValidateQr(string token)
+    {
+      var user = await _context.Nopension.FirstOrDefaultAsync(e => e.token == token);
+
+      if (user == null)
+      {
+        return BadRequest(new { message = "Token no fue encontrado!" });
+      }
+
+      bool dateValida = NopensionService.ValidateDate(user.fechaVencimiento, 30);
+      
+      var newObjet = new { status = dateValida };
+      if(dateValida) {
+        return Ok(new {
+            status = dateValida,
+            token = dateValida ? user.token : "", 
+            Nombrecompleto = user.Nombrecompleto, 
+            Identificacion = user.Identificacion,
+            fechaVencimiento = user.fechaVencimiento
+         });
+      }
+
+      return Ok(newObjet);
+    }
+
 
     [HttpGet]
     public async Task<IActionResult> GetTramites([FromQuery] int? page)
@@ -62,7 +88,7 @@ namespace Aplicativo.net.Controllers
       int _page = page ?? 1;
       int totalRecords = await _context.Nopension.CountAsync();
       int total_pages = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(totalRecords / records)));
-      var pensiones = await _context.Nopension.Skip((_page * 1) * records).Take(records).ToListAsync();
+      var pensiones = await _context.Nopension.Skip((_page - 1) * records).Take(records).ToListAsync();
 
       return Ok(
         new
@@ -72,6 +98,15 @@ namespace Aplicativo.net.Controllers
           total_records = totalRecords,
           current_page = _page
         });
+    }
+
+    [HttpGet("test")]
+    public async void GetTramitesv2()
+    {
+
+      NopensionService a = new NopensionService(_context);
+      a.GenerarCodigoQR("www.google.com", "resources/qr/");
+
     }
 
 
@@ -104,33 +139,12 @@ namespace Aplicativo.net.Controllers
       }
 
       var dataExcel = fileHeader.ReadFile(request.Archive);
+      fileHeader.deleteFile(staticPath);
+      NopensionService service = new NopensionService(_context);
 
-      try
-      {
-        foreach (var item in dataExcel)
-        {
-          var user = await _context.Nopension.FirstOrDefaultAsync(e => e.Identificacion == item.Identificacion.ToString());
+      await Task.Run(() => service.loadUserUsingTask(dataExcel, _config.GetSection("routeQrPath").Value));
 
-          if (user != null) continue;
 
-          var createUser = new nopension
-          {
-            Identificacion = item.Identificacion,
-            Nombrecompleto = item.Nombrecompleto,
-            estado = item.estado
-          };
-
-          _context.Nopension.Add(createUser);
-        }
-
-        await _context.SaveChangesAsync();
-
-        fileHeader.deleteFile(staticPath);
-      }
-      catch (Exception ex)
-      {
-        return BadRequest(new { message = "Error al guardar la informacion del archivo excel" });
-      }
       return Ok(new { message = "Se guardo correctamente los usuario" });
     }
 
@@ -170,20 +184,27 @@ namespace Aplicativo.net.Controllers
       document.AddAuthor("Gobernacion");
 
       document.Open();
-      //var header = "ClientApp//src//assets//Imagenes//nopension//logos.png";
+       NopensionService service = new NopensionService(_context);
 
       var header_logo_left = _config.GetSection("routeFileImages").Value + "nopension//logo_depto.png";
       var header_logo_right = _config.GetSection("routeFileImages").Value + "nopension//logo_cesar.png";
+      var qr = clienteItem.qrPath;
 
       //var footer = "ClientApp//src//assets//Imagenes//nopension//footer.png";
       iTextSharp.text.Image img_header_left = iTextSharp.text.Image.GetInstance(header_logo_right);
       iTextSharp.text.Image img_header_right = iTextSharp.text.Image.GetInstance(header_logo_left);
+      iTextSharp.text.Image img_user_qr = iTextSharp.text.Image.GetInstance(qr);
       //img_header.ScaleAbsolute(50, 145);
       //img_header.SetAbsolutePosition(7, 50);
       img_header_left.ScaleAbsoluteWidth(95);
       img_header_left.ScaleAbsoluteHeight(95);
       // img_header_left.SetAbsolutePosition(0, 675);
       document.Add(img_header_left);
+
+      img_user_qr.ScaleAbsoluteWidth(95);
+      img_user_qr.ScaleAbsoluteHeight(95);
+      img_user_qr.SetAbsolutePosition(240, 671);
+      document.Add(img_user_qr);
 
       img_header_right.ScaleAbsoluteWidth(95);
       img_header_right.ScaleAbsoluteHeight(95);
@@ -243,28 +264,6 @@ namespace Aplicativo.net.Controllers
 
       document.Add(new Paragraph(" "));
       document.Add(new Paragraph(" "));
-
-      //PdfPTable table = new PdfPTable(new float[] { 55f, 400f  }) {  WidthPercentage = 100 };
-      //PdfPCell cell1 = new PdfPCell(new Phrase("Proyecto:", font_paragraph_size_10));
-      //PdfPCell cell2 = new PdfPCell(new Phrase("Karelys Rios Maestre - Profesional-Contratista", font_paragraph_size_10));
-      //table.AddCell(cell1);
-      //table.AddCell(cell2);
-
-      //PdfPCell cell = new PdfPCell(new Phrase("El arriba firmante declara que el documento proyectado se encuentra ajustado a las disposiciones legales, por lo cual bajo mi responsabilidad presento para firma.",font_paragraph_size_10));
-      //cell.Rowspan = 1;
-      //cell.Colspan = 2;
-      //table.AddCell(cell);
-      //document.Add(table);
-
-      // Paragraph p6 = new Paragraph("\nProyecto: Karelys Rios Maestre - Profesional-Contratista");
-      //  p6.Alignment = Element.ALIGN_JUSTIFIED;
-      //  p6.SetLeading(2, 2);
-      //   document.Add(p6);   
-
-      // Paragraph p7 = new Paragraph("El arriba firmante declara que el documento proyectado se encuentra ajustado a las disposiciones legales, por lo cual bajo mi responsabilidad presento para firma.");
-      //  p7.Alignment = Element.ALIGN_JUSTIFIED;
-      // p7.SetLeading(1, 1);
-      //   document.Add(p7);
       document.Add(new Paragraph(" "));
 
       Paragraph p10 = new Paragraph(new Chunk("NOTA: Esta certificación se ha expedido a través de nuestro Módulo de Autoservicio a Empleados, por lo que NO es válida a menos que se confirme en el siguiente teléfono en Valledupar (Ces) 5748230 EXT: 313 -319 - 314 - 315.", font_paragraph));
@@ -306,7 +305,6 @@ namespace Aplicativo.net.Controllers
       img_logo_center.ScaleAbsoluteWidth(500);
       img_logo_center.ScaleAbsoluteHeight(500);
       img_logo_center.SetAbsolutePosition(50, 190);
-      //img_logo_center.ScaleToFit(1700, 1000); 
       document.Add(img_logo_center);
 
       img_firma_lina_maria.ScaleAbsoluteWidth(140);
@@ -330,6 +328,14 @@ namespace Aplicativo.net.Controllers
 
       //System.IO.FileStream fileStream =  System.IO.File.OpenRead(filePath); 
       byte[] fileContent = System.IO.File.ReadAllBytes(filePath);
+
+     
+      clienteItem.updatedAt = DateTime.Now;
+      clienteItem.fechaVencimiento = DateTime.Now;
+      clienteItem.estadoCertificado = "valido";
+      clienteItem.totalDescargas = clienteItem.totalDescargas + 1;
+      await Task.Run(() => service.updateUser(clienteItem));
+
       return new FileContentResult(fileContent, "application/pdf");
       //var fileUpload = File(fileStream, "application/octet-stream", "{{filename.ext}}");
       //System.IO.File.Delete(filePath);
@@ -355,7 +361,5 @@ namespace Aplicativo.net.Controllers
 
       return Ok(new { message = "Usuario actualizado" });
     }
-
-
   }
 }
