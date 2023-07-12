@@ -17,6 +17,7 @@ namespace Aplicativo.net.Services
   public class NopensionService
   {
     private readonly AplicativoContext _context;
+    private readonly IConfiguracion _configuracion;
 
     public NopensionService(AplicativoContext context)
     {
@@ -47,6 +48,8 @@ namespace Aplicativo.net.Services
             token = "pension-" + Guid.NewGuid().ToString(),
             qrPath = qrPath
           };
+          string AplicativoUrl = _configuracion.GetValue<string>("aplicationUrl");
+
           string url = "http://localhost:5001/public/validate?token=" + createUser.token;
           this.GenerarCodigoQR(url, qrPath);
           _context.Nopension.Add(createUser);
@@ -83,8 +86,8 @@ namespace Aplicativo.net.Services
 
     public void GenerarCodigoQR(string texto, string rutaArchivo)
     {
-      var width = 250; // width of the Qr Code
-      var height = 250; // height of the Qr Code
+      var width = 220; // width of the Qr Code
+      var height = 220; // height of the Qr Code
       var margin = 0;
       var qrCodeWriter = new ZXing.BarcodeWriterPixelData
       {

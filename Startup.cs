@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Aplicativo.net.Repositories;
+using Aplicativo.net.services;
 
 namespace Aplicativo.net
 {
@@ -49,6 +50,10 @@ namespace Aplicativo.net
         };
       });
       services.AddScoped<IAuthRepository, AuthRepository>();
+      services.AddScoped<NopensionService>();
+       services.AddScoped<EnvironmentService>();
+
+
       services.AddAutoMapper(typeof(Startup));
       // In production, the Angular files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
