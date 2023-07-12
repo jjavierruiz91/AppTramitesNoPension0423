@@ -4,24 +4,23 @@ using System.Collections.Generic;
 using Aplicativo.net.Models;
 using System.Threading.Tasks;
 using System;
-
-using ZXing;
-using ZXing.Common;
+ 
 using ZXing.QrCode;
 using System.IO;
-using System.Drawing.Imaging;
-using System.Drawing;
+ 
 
 namespace Aplicativo.net.Services
 {
   public class NopensionService
   {
     private readonly AplicativoContext _context;
-    private readonly IConfiguracion _configuracion;
+    private readonly EnvironmentService _environmentService;
 
-    public NopensionService(AplicativoContext context)
+
+    public NopensionService(AplicativoContext context, EnvironmentService environmentService)
     {
       _context = context;
+      _environmentService = environmentService;
     }
 
     public async Task loadUserUsingTask(List<ImportFile> dataExcel, string _qrPath)
@@ -48,9 +47,11 @@ namespace Aplicativo.net.Services
             token = "pension-" + Guid.NewGuid().ToString(),
             qrPath = qrPath
           };
-          string AplicativoUrl = _configuracion.GetValue<string>("aplicationUrl");
+          string AplicativoUrl = _environmentService.ObtenerUrlDeProfile();
+          Console.WriteLine(AplicativoUrl);
+          
+          string url = $"{AplicativoUrl}public/validate?token=" + createUser.token;
 
-          string url = "http://localhost:5001/public/validate?token=" + createUser.token;
           this.GenerarCodigoQR(url, qrPath);
           _context.Nopension.Add(createUser);
         }

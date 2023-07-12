@@ -31,15 +31,19 @@ namespace Aplicativo.net.Controllers
     private readonly IWebHostEnvironment _appEnvironment;
     private readonly IConfiguration _config;
 
+  private readonly NopensionService _nopensionService;
+
+
     private readonly int records = 10;
     string[] columnNames = { "identificacion", "nombrecompleto", "estado" };
     string[] allowTypes = { ".csv", ".xlsx" };
 
-    public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config)
+    public NopensionController(AplicativoContext context, IWebHostEnvironment appEnvironment, IConfiguration config, NopensionService nopensionService)
     {
       _context = context;
       _appEnvironment = appEnvironment;
       _config = config;
+      _nopensionService = nopensionService;
     }
 
     [HttpGet("{id}")]
@@ -104,8 +108,7 @@ namespace Aplicativo.net.Controllers
     public async void GetTramitesv2()
     {
 
-      NopensionService a = new NopensionService(_context);
-      a.GenerarCodigoQR("www.google.com", "resources/qr/");
+      _nopensionService.GenerarCodigoQR("www.google.com", "resources/qr/");
 
     }
 
@@ -140,9 +143,8 @@ namespace Aplicativo.net.Controllers
 
       var dataExcel = fileHeader.ReadFile(request.Archive);
       fileHeader.deleteFile(staticPath);
-      NopensionService service = new NopensionService(_context);
-
-      await Task.Run(() => service.loadUserUsingTask(dataExcel, _config.GetSection("routeQrPath").Value));
+    
+      await Task.Run(() => _nopensionService.loadUserUsingTask(dataExcel, _config.GetSection("routeQrPath").Value));
 
 
       return Ok(new { message = "Se guardo correctamente los usuario" });
@@ -184,8 +186,7 @@ namespace Aplicativo.net.Controllers
       document.AddAuthor("Gobernacion");
 
       document.Open();
-       NopensionService service = new NopensionService(_context);
-
+       
       var header_logo_left = _config.GetSection("routeFileImages").Value + "nopension//logo_depto.png";
       var header_logo_right = _config.GetSection("routeFileImages").Value + "nopension//logo_cesar.png";
       var qr = clienteItem.qrPath;
@@ -334,7 +335,7 @@ namespace Aplicativo.net.Controllers
       clienteItem.fechaVencimiento = DateTime.Now;
       clienteItem.estadoCertificado = "valido";
       clienteItem.totalDescargas = clienteItem.totalDescargas + 1;
-      await Task.Run(() => service.updateUser(clienteItem));
+      await Task.Run(() => _nopensionService.updateUser(clienteItem));
 
       return new FileContentResult(fileContent, "application/pdf");
       //var fileUpload = File(fileStream, "application/octet-stream", "{{filename.ext}}");
