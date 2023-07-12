@@ -1,6 +1,5 @@
 .public__container{
-  height: 50vh;
-  margin-bottom: 5vh;
+  height: 35vh;
   padding: 2em;
 }
 
@@ -15,5 +14,8 @@
 .public__container-title > h2{
   font-size: 2rem;
   font-weight: bold;
+}
 
+.public__container-body > p{
+  font-size: 1.5rem;
 }
