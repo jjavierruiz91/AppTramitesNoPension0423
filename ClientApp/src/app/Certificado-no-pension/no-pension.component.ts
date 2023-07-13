@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
@@ -15,12 +15,17 @@ import { saveAs } from 'file-saver'
 export class NoPensionComponent implements OnInit {
 
   registerForm: FormGroup;
+  reCaptcha: FormControl;
+  generateCaptcha: {
+    firstValue: number
+    secondValue: number
+  } = { firstValue: 0, secondValue: 0 }
+
   isJubilado: boolean = false;
   buttonDisable: boolean = false;
   submitted
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private NopensionService: NopensionService,
     private toastr: ToastrService,
     private location: Location
@@ -29,10 +34,10 @@ export class NoPensionComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       id: [null, [Validators.required]],
-    },
+    });
 
-    );
-
+    this.reCaptcha = new FormControl(0, [Validators.min(1)]);
+    this.generateNumberRandoms();
   }
 
   obtenerFecha() {
@@ -44,6 +49,9 @@ export class NoPensionComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (!this.registerForm.valid) return this.toastr.warning('se produjo un error, el campo no puede estar vacio')
+    if (!this.reCaptcha.valid) return this.toastr.warning('Completa el capchat para descargar el pdf')
+    if (!this.validateReCaptcha()) return this.toastr.warning('La operacion aritmetica no es correcta')
+
     const data = this.registerForm.getRawValue();
     this.buttonDisable = true;
     this.isJubilado = false;
@@ -52,11 +60,11 @@ export class NoPensionComponent implements OnInit {
       const blob = new Blob([pension], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       saveAs(url, "Certificado NoPension")
+      this.generateNumberRandoms();
+      this.onReset();
     }, error => {
       this.buttonDisable = false;
-      console.log("erro", error);
       let message = "Ocurrio un error al descargar el pdf, contactese con el administrador"
-
       if (error.status === 401) {
         message = "El usuario que intenta buscar no fue encontrado"
       }
@@ -76,7 +84,19 @@ export class NoPensionComponent implements OnInit {
   onReset() {
     this.submitted = false;
     this.registerForm.reset();
-    this.goBack();
+    this.reCaptcha.setValue(0);
+
+  }
+
+  generateNumberRandoms() {
+    this.generateCaptcha.firstValue = this.NopensionService.generateRandomNumber(50);
+    this.generateCaptcha.secondValue = this.NopensionService.generateRandomNumber(50);
+  }
+
+  validateReCaptcha(): Boolean {
+    const totalOperation = this.generateCaptcha.firstValue + this.generateCaptcha.secondValue;
+    const isValid = this.reCaptcha.value === totalOperation;
+    return isValid;
   }
 
 }

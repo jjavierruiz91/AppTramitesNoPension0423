@@ -1,0 +1,67 @@
+<app-menu-funcionario></app-menu-funcionario>
+
+<section class="container__nopension col-xs-12 col-md-12 col-lg-12 col-xl-12">
+  <div class="container__title">
+    <h1>Gestion de usuarios</h1>
+  </div>
+
+  <div class="container__body">
+    <form (ngSubmit)="onEventUpdateUser()">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputIdentification">Identificacion</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inputIdentification"
+            [(ngModel)]="user.identificacion"
+            [ngModelOptions]="{ standalone: true }"
+            [value]="user.identificacion"
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputNombreCompleto">Nombre completo</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inputNombreCompleto"
+            [(ngModel)]="user.nombrecompleto"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="Password"
+            [value]="user.nombrecompleto"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="stateUser">Estado</label>
+          <select
+            id="stateUser"
+            class="form-control"
+            [(ngModel)]="user.estado"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option value="jubilado">Jubilado</option>
+            <option value="Carrera administrativa">
+              Carrera administrativa
+            </option>
+            <option value="Libre Nombramiento">Libre Nombramiento</option>
+            <option value="No Definido">No Definido</option>
+            <option value="proceso">proceso</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <button type="submit" class="btn btn-primary mr-1">Actualizar</button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          [routerLink]="['/pension']"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

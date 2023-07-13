@@ -1,57 +1,171 @@
-    <div class="container mb-2">
-        <div class="row">
-
-            <div class="col-md-6 col-sm-8 rounded mx-auto bg-white mt-2">
-                <br>
-                <div class="form-group mb-3 mt-2">
-                    <!-- Colocar margin top -->
-                    <img alt="" src="assets/Imagenes/lohacemos.png" width="100%">
-                </div>
-
-                <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
-
-                    <div class="container1 mt-1">
-                        <h3><strong>
-                                <span style="font: size 22px ">Consulta Certificado de No pensión</span>
-                            </strong></h3>
-
-                        <p><span style="font-size:18px">Ingresa tu numero de Identificación</span></p>
-
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="identificacion">Número de identificación: *</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-fingerprint fa-1x"
-                                        style="color: cornflowerblue"></i></span>
-                            </div>
-                            <input class="form-control" formControlName="id"
-                                [ngClass]="{ 'is-invalid': submitted && f.id.errors }"
-                                placeholder="Número de identificación" type="text" name="identificacion" id="id"
-                                size="25" maxlength="11" value="">
-                            <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
-                                <div *ngIf="f.id.errors.required">El campo es obligatorio</div>
-                                <div *ngIf="f.id.errors.pattern">Solo numeros</div>
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="container__status mb-1 p-1 " *ngIf="isJubilado">
-                        <p> <span class="emphasized"> Usted se encuentra pensionado, no puede obtener el certificado de no pensión.</span>
-                    </div>
-                    
-                    <div style="margin-top: 15px" class="form-group">
-                        <div class="input-group mb-3">
-                            <button type="submit" name="ButtonLogin" id="ButtonLogin" [disabled]="buttonDisable"
-                                class="btn btn-block btn-primary">Consultar </button>
-                        </div>
-                        <div class="input-group mb-3">
-                            <input type="reset" (click)="goBack()" name="ButtonLogin" value="Cancelar" id="ButtonLogin"
-                                class="btn btn-block btn-secundary">
-                        </div>
-                    </div>
-
-                    <br>
-                </form>
-            </div>
-        </div>
+<section>
+  <div style="background: #005dca; height: 40px; top: -10px">
+    <div class="container container--default" style="width: 200px; float: left">
+      <a
+        style="
+          margin-left: 60px;
+          height: 40px;
+          width: 119px;
+          overflow: hidden;
+          display: block;
+        "
+        href="https://www.gov.co/"
+        target="_blank"
+      >
+        <img
+          id="gov_co_logo"
+          style="height: 40px; width: 100px"
+          alt=""
+          src="assets/Imagenes/logoCol.svg"
+        />
+      </a>
     </div>
+  </div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mt-2 mt-lg-0">
+          <img
+            src="assets/Imagenes/logo_depto_big.png"
+            height="45"
+            alt=""
+            loading="lazy"
+          />
+        </a>
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="Inicio">Inicio</a>
+          </li>
+          <!-- <li class="nav-item">
+                    <a class="nav-link" href="Tramites">Trámites</a> -->
+        </ul>
+        <!-- Left links -->
+      </div>
+
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="Ingresar">Ingresar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="Registrarse">Registrarse</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="assets/Archivos/Manual_Usuario2.0.pdf"
+              target="_blank"
+              ><span class="fa fa-question"></span
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+<div class="container mb-2">
+  <div class="row">
+    <div class="col-md-6 col-sm-8 rounded mx-auto bg-white mt-2">
+      <br />
+      <div class="form-group mb-3 mt-2">
+        <!-- Colocar margin top -->
+        <img alt="" src="assets/Imagenes/lohacemos.png" width="100%" />
+      </div>
+
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit(registerForm.value)"
+      >
+        <div class="container1 mt-1">
+          <h3>
+            <strong>
+              <span style="font: size 22px"
+                >Consulta Certificado de No pensión</span
+              >
+            </strong>
+          </h3>
+
+          <p>
+            <span style="font-size: 18px"
+              >Ingresa tu numero de Identificación</span
+            >
+          </p>
+        </div>
+        <div class="input-group mb-3">
+          <label for="identificacion">Número de identificación: *</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"
+                ><i
+                  class="fas fa-fingerprint fa-1x"
+                  style="color: cornflowerblue"
+                ></i
+              ></span>
+            </div>
+            <input
+              class="form-control"
+              formControlName="id"
+              [ngClass]="{ 'is-invalid': submitted && f.id.errors }"
+              placeholder="Número de identificación"
+              type="text"
+              name="identificacion"
+              id="id"
+              size="25"
+              maxlength="11"
+              value=""
+            />
+            <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
+              <div *ngIf="f.id.errors.required">El campo es obligatorio</div>
+              <div *ngIf="f.id.errors.pattern">Solo numeros</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container__operation">
+          <div class="input-group mb-1">
+            <label for="complete_operation"
+              >Completa la operacion: {{ generateCaptcha.firstValue }} +
+              {{ generateCaptcha.secondValue }}
+            </label>
+          </div>
+
+          <div class="input-group mb-1">
+            <input
+              class="form-control"
+              id="complete_operation"
+              type="number"
+              [formControl]="reCaptcha"
+            />
+          </div>
+        </div>
+
+        <div class="container__status mb-1 p-1" *ngIf="isJubilado">
+          <p>
+            <span class="emphasized">
+              Usted se encuentra pensionado, no puede obtener el certificado de
+              no pensión.</span
+            >
+          </p>
+        </div>
+
+        <div style="margin-top: 15px" class="form-group">
+          <div class="input-group mb-3">
+            <button
+              type="submit"
+              name="ButtonLogin"
+              id="ButtonLogin"
+              [disabled]="buttonDisable"
+              class="btn btn-block btn-primary"
+            >
+              Consultar
+            </button>
+          </div>
+        </div>
+        <br />
+      </form>
+    </div>
+  </div>
+</div>

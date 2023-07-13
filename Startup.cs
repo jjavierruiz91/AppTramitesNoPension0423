@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Aplicativo.net.Repositories;
+using Aplicativo.net.Services;
 
 namespace Aplicativo.net
 {
@@ -29,34 +30,47 @@ namespace Aplicativo.net
         public void ConfigureServices(IServiceCollection services)
         {
             ///services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
             services.AddSwaggerDocument();
             services.AddControllersWithViews();
-            services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=PROLIANT-DEV\SQLEXPRESS;Database=AppTramites;Trusted_Connection=True;"));
+            //services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=PROLIANT-DEV\SQLEXPRESS;Database=AppTramites;Trusted_Connection=True;"));
 
-            //services.AddDbContext<AplicativoContext>(opt => opt.UseSqlServer(@"Server=localhost;Database=localhost;User=SA;Password=Andres12;ConnectRetryCount=0;MultipleActiveResultSets=true;Trusted_Connection=False;"));
+            services.AddDbContext<AplicativoContext>(
+                opt =>
+                    opt.UseSqlServer(
+                        @"Server=localhost;Database=localhost;User=SA;Password=Andres12;ConnectRetryCount=0;MultipleActiveResultSets=true;Trusted_Connection=False;"
+                    )
+            );
             // services.AddDbContext<AplicativoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
             services.AddCors();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-                        .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(
+                                Configuration.GetSection("AppSettings:Token").Value
+                            )
+                        ),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<NopensionService>();
+            services.AddScoped<EnvironmentService>();
+
             services.AddAutoMapper(typeof(Startup));
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,7 +105,8 @@ namespace Aplicativo.net
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}"
+                );
             });
 
             app.UseSpa(spa =>
@@ -106,8 +121,6 @@ namespace Aplicativo.net
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-
-
         }
     }
 }
