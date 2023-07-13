@@ -93,11 +93,6 @@ export class IngresarComponent implements OnInit {
             this.router.navigate(['InicioFuncionarioTIC']);
           }
 
-          if (this.rol == "FuncionarioNoPension") {
-            this.toastr.success('Bienvenid@ Funcionari@' + res.nombres + ' ' + res.apellidos + '!', 'Bienvenid@ Funcionari@ De las TIC!');
-            this.router.navigate(['pension']);
-          }
-
         } else if (res.mensaje) {
           this.toastr.error(res.mensaje, 'Error!');
         } else {
