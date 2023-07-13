@@ -23,14 +23,16 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Local": {
+    "Development": {
       "commandName": "Project",
+      "applicationUrl": "https://localhost:5001/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "https://localhost:5001/"
       }
     },
     "Production": {
       "commandName": "Project",
+      "applicationUrl": "https://localhost:5001/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "http://186.84.72.154:2022/"
       }

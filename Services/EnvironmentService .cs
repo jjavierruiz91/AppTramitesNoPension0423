@@ -32,15 +32,18 @@ namespace Aplicativo.net.Services
     public string ObtenerUrl(string profile)
     { 
         string url = _configuracion.GetValue<string>($"profiles:{profile}:applicationUrl");
-
+         if (string.IsNullOrEmpty(url))
+        {
+            throw new InvalidOperationException($"La URL para el perfil '{profile}' no está configurada.");
+        }
         return url;
     } 
 
      public string ObtenerUrlDeProfile( )
     { 
         string profile = this.ObtenerPerfilActual(); 
-        string url = _configuracion.GetValue<string>($"profiles:{profile}:applicationUrl"); 
-        return url;
+      
+        return profile;
     } 
   }
 }

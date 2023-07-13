@@ -60,6 +60,7 @@ namespace Aplicativo.net.Services
       }
       catch (Exception ex)
       {
+        Console.WriteLine(ex);
         Console.WriteLine(new { message = "Error al guardar la informacion del archivo excel" });
       }
 
