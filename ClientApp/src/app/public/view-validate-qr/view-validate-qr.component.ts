@@ -20,6 +20,8 @@ export class ViewValidateQrComponent implements OnInit {
   }
 
   getNoPensionByToken(token: string) {
+    console.log(token);
+
     this.noPensionService.getNoPensionByToken(token).subscribe(pension => {
       this.noPension = pension;
     })

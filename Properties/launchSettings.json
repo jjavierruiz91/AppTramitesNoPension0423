@@ -22,20 +22,20 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    },
-    "Development": {
-      "commandName": "Project",
-      "applicationUrl": "https://localhost:5001/",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "https://localhost:5001/"
-      }
-    },
-    "Production": {
-      "commandName": "Project",
-      "applicationUrl": "https://localhost:5001/",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "http://186.84.72.154:2022/"
-      }
+    }
+  },
+  "Development": {
+    "commandName": "Project",
+    "applicationUrl": "https://localhost:5001/",
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "https://localhost:5001/"
+    }
+  },
+  "Production": {
+    "commandName": "Project",
+    "applicationUrl": "https://localhost:5001/",
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "http://186.84.72.154:2022/"
     }
   }
 }
